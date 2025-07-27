@@ -1,0 +1,27 @@
+baseURL = "/"
+languageCode = "en-us"
+title = "Karthik Ganeshram"
+theme = "karthik-www-theme"
+googleAnalytics = "UA-129268689-2"
+enableRobotsTXT = true
+[author]
+name = "Karthik Ganeshram"
+email = "raams.karthik@gmail.com"
+[permalinks]
+blog = "/blog/:title/"
+[markup]
+[markup.highlight]
+codeFences = true
+guessSyntax = false
+hl_Lines = ""
+lineNoStart = 1
+lineNos = false
+lineNumbersInTable = true
+noClasses = true
+style = "manni"
+tabWidth = 4
+# Add this to make shortcodes render html correctly
+defaultMarkdownHandler = "goldmark"
+[markup.goldmark]
+[markup.goldmark.renderer]
+unsafe = true

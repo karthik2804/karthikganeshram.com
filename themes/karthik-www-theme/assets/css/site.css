@@ -1,0 +1,149 @@
+main a {
+  @apply text-red-600;
+  @apply underline;
+}
+
+main a:hover {
+  @apply text-red-800;
+}
+
+.novelty-link a {
+  @apply font-extrabold;
+  @apply text-gray-800;
+  @apply no-underline;
+}
+
+.novelty-link a:hover {
+  @apply text-gray-600;
+}
+
+summary a {
+  @apply text-gray-800;
+  @apply no-underline;
+}
+
+summary a:hover {
+  @apply text-gray-800;
+  @apply underline;
+}
+
+article p {
+  @apply text-lg;
+  @apply my-4;
+}
+
+article h1 {
+  @apply text-4xl;
+  @apply mt-12;
+  @apply leading-none;
+  @apply text-left;
+}
+
+article h2 {
+  @apply text-4xl;
+  @apply mt-12;
+  @apply leading-none;
+  @apply text-left;
+}
+
+article h3 {
+  @apply text-2xl;
+  @apply mt-6;
+  @apply font-semibold;
+}
+
+article img {
+  @apply mx-auto;
+  @apply my-4;
+}
+
+article code {
+  background-color: #f0f3f3;
+  @apply text-orange-600;
+  @apply p-1;
+  /* The following is a kludge to make code sizing work properly in prod */
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+article pre {
+  @apply my-4;
+  @apply p-1;
+  overflow-x: auto;
+  @apply text-gray-800;
+  /* The following is a kludge to make code sizing work properly in prod */
+  line-height: 1.3;
+}
+
+article pre code {
+  @apply text-gray-800;
+  display: inline-block;
+}
+
+article ul {
+  @apply list-disc;
+  @apply list-outside;
+  @apply my-4;
+  padding-inline-start: 0;
+}
+
+article ol {
+  @apply list-decimal;
+  @apply list-outside;
+  @apply my-4;
+  padding-inline-start: 0;
+}
+
+article li {
+  @apply mx-8;
+}
+
+article li p {
+  @apply my-2;
+}
+
+blockquote {
+  background: #f0f3f3;
+  border-left: 10px solid #ccc;
+  margin: 1.5em;
+  padding: 0.5em 10px;
+  quotes: "\201C""\201D""\2018""\2019";
+}
+
+blockquote p {
+  display: inline;
+}
+
+/* For centered and fitted footer border */
+.footer-fit {
+  width: fit-content;
+}
+
+article .footnote-ref {
+  margin-left: 0.2rem;
+}
+
+article .footnotes {
+  @apply mt-12;
+}
+
+article .callout {
+  background-color: #eef4f7;
+  @apply p-4;
+  @apply shadow-xl;
+}
+
+article .callout-grey {
+  background-color: #c9c9c933;
+  @apply p-4;
+  @apply shadow-xl;
+}
+
+summary {
+  display: revert;
+}
+
+div.begin-task-list + ul {
+  list-style: none;
+  margin-left: -1em;
+}

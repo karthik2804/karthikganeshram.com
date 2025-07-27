@@ -1,4 +1,7 @@
-# karthikganeshram.in
+# karthikganeshra.com
 
-Source code for [karthikganeshram.com](https://karthikganeshram.com), my personal website, built with [Eleventy](https://www.11ty.io).
+My personal website which is hosted [here](https://karthikganeshram.com).
 
+## Building
+
+To run the website locally just run the command `npm run start`.
