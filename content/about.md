@@ -1,6 +1,6 @@
 ---
 title: "About me"
-date: 2020-03-18T23:26:35-07:00
+date: 2025-07-26T23:26:35-07:00
 draft: false
 type: "about"
 ---
@@ -17,4 +17,4 @@ I also love hiking and am currently exploring Europe while living in the Netherl
 
 I’m also a big fan of good coffee — nothing quite like a great cup to fuel creativity and reflection.
 
-I’m an avid reader, especially drawn to philosophy, self-improvement, and biographies. Books help me gain new perspectives and continually expand my understanding of the world and myself.
+I’m an avid reader, especially drawn to philosophy, self-improvement, and biographies. Books help me gain new perspectives and continually expand my understanding of the world and myself. Check out my [reading list](/reading) for a glimpse into some of the books I have read.
