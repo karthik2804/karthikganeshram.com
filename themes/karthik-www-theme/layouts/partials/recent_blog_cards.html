@@ -1,0 +1,39 @@
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+  {{ $posts := first 3 (where .Site.RegularPages "Section" "blog") }}
+  {{ range $posts }}
+    {{ $post := . }}
+    <a href="{{ $post.RelPermalink }}" class="relative block rounded-lg overflow-hidden h-[300px] group shadow-lg">
+      {{ with $post.Params.header_image }}
+        <img
+          src="{{ . | relURL }}"
+          alt="Image for {{ $post.Title }}"
+          loading="lazy"
+          class="w-full h-full object-cover"
+        />
+        <!-- Top bar: title -->
+        <div
+          class="absolute top-0 left-0 right-0 px-4 py-2 z-10"
+          style="background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0)); 
+                 backdrop-filter: blur(2px);
+                 -webkit-backdrop-filter: blur(2px);"
+        >
+          <h3 class="text-white text-lg font-semibold truncate">
+            {{ $post.Title }}
+          </h3>
+        </div>
+        <!-- Bottom bar: date -->
+        <div
+          class="absolute bottom-0 left-0 right-0 px-4 py-2 text-white text-sm z-10"
+          style="background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0)); 
+                 backdrop-filter: blur(2px);
+                 -webkit-backdrop-filter: blur(2px);"
+        >
+          <time datetime="{{ $post.Date.Format "2006-01-02" }}">
+            {{ $post.Date.Format "Jan 2, 2006" }}
+          </time>
+        </div>
+      {{ end }}
+    </a>
+  {{ end }}
+</div>
+

@@ -1,0 +1,53 @@
+<header class="max-w-screen-md mx-auto text-center">
+  {{ if or (eq .RelPermalink "/") (eq .RelPermalink "/about/") (eq .RelPermalink
+  "/blog/")}}
+  <h1>
+    <a class="text-4xl sm:text-6xl hover:text-gray-600" href="/"
+      >Karthik Ganeshram</a
+    >
+  </h1>
+  {{ else }}
+  <a class="text-4xl sm:text-6xl hover:text-gray-600" href="/"
+    >Karthik Ganeshram</a
+  >
+  {{ end }}
+  <nav>
+    <div class="inline-block border-t border-b border-gray-800 p-2 text-lg">
+      <a
+        class="hover:underline"
+        href="/"
+        title="Home - {{ .Site.Title }}"
+        type="text/html"
+        >HOME</a
+      >
+      <span class="mr-2 ml-2">&middot;</span>
+      <a
+        class="hover:underline"
+        href="/about/"
+        title="About - {{ .Site.Title }}"
+        type="text/html"
+        >ABOUT</a
+      >
+
+      <span class="hidden sm:inline mr-2 ml-2">&middot;</span>
+      <br class="sm:hidden" />
+      <a
+        class="hover:underline"
+        class="inline-block"
+        href="/blog/"
+        title="Blog - {{ .Site.Title }}"
+        type="text/html"
+        >BLOG</a
+      >
+      <span class="mr-2 ml-2 inline-block">&middot;</span>
+      <a
+        class="hover:underline"
+        class="inline-block"
+        href="/Karthik_Ganeshram.pdf"
+        title="Resume - {{ .Site.Title }}"
+        type="text/html"
+        >RESUME</a
+      >
+    </div>
+  </nav>
+</header>

@@ -1,21 +1,28 @@
 {
-  "name": "karthikganeshram.in",
-  "version": "1.0.0",
-  "description": "My personal website",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "env NODE_ENV=production npx eleventy"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@11ty/eleventy": "^0.12.1",
-    "@11ty/eleventy-plugin-syntaxhighlight": "^3.1.0",
-    "eleventy": "^1.0.6",
-    "markdown-it": "^12.0.6",
-    "markdown-it-attrs": "^4.0.0",
-    "markdown-it-image-lazy-loading": "^1.2.0"
-  }
+    "name": "karthikganeshram.com",
+    "version": "0.0.1",
+    "description": "Theme for karthikganeshram.com blog",
+    "main": "index.js",
+    "repository": "",
+    "author": "Karthik Ganeshram",
+    "scripts": {
+        "start": "hugo server -D"
+    },
+    "devDependencies": {
+        "@fullhuman/postcss-purgecss": "^2.1.0",
+        "autoprefixer": "^9.7.4",
+        "postcss": "^7.0.36",
+        "postcss-cli": "^7.1.0",
+        "postcss-import": "^12.0.1",
+        "tailwindcss": "^1.2.0"
+    },
+    "browserslist": [
+        "last 1 version",
+        "> 1%",
+        "maintained node versions",
+        "not dead"
+    ],
+    "dependencies": {
+        "typeface-lato": "0.0.75"
+    }
 }

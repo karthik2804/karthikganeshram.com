@@ -1,0 +1,16 @@
+{{ define "main" }}
+
+<div class="text-4xl">Latest</div>
+{{ range first 3 .Pages }} {{ partial "list_item" . }} {{ end }}
+
+<div class="mt-10 text-4xl">Reflection</div>
+{{ range .Pages }} {{ if in .Params.categories "reflection" }} {{ partial
+"list_item" . }} {{ end }} {{ end }}
+
+<div class="mt-10 text-4xl">Personal</div>
+{{ range .Pages }} {{ if in .Params.categories "personal" }} {{ partial
+"list_item" . }} {{ end }} {{ end }}
+
+<div class="mt-10 text-4xl">Tutorials</div>
+{{ range .Pages }} {{ if in .Params.categories "tutorials" }} {{ partial
+"list_item" . }} {{ end }} {{ end }} {{ end }}

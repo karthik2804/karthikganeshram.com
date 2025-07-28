@@ -1,0 +1,8 @@
+name = "karthik-www-theme"
+description = "Theme for karthik-www blog"
+homepage = "karthikganeshram.com"
+min_version = "0.0.1"
+
+[author]
+name = "Karthik Ganeshram"
+homepage = "karthikganeshram.com"
