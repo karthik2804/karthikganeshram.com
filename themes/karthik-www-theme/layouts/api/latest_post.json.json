@@ -1,0 +1,13 @@
+{{- $posts := where .Site.RegularPages "Section" "blog" -}}
+{{- $sorted := sort $posts "Date" "desc" -}}
+{{- if gt (len $sorted) 0 -}}
+  {{- $latest := index $sorted 0 -}}
+  {
+    "title": {{ $latest.Title | jsonify }},
+    "date": {{ $latest.Date.Format "2006-01-02T15:04:05Z07:00" | jsonify }},
+    "url": {{ $latest.RelPermalink | jsonify }},
+    "summary": {{ $latest.Summary | jsonify }}
+  }
+{{- else -}}
+  {}
+{{- end -}}

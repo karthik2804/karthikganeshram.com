@@ -25,3 +25,7 @@ defaultMarkdownHandler = "goldmark"
 [markup.goldmark]
 [markup.goldmark.renderer]
 unsafe = true
+
+[outputFormats.JSON]
+mediaType = "application/json"
+isPlainText = true
