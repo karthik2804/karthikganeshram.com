@@ -1,0 +1,327 @@
+<!doctype html><html lang=en-us><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"\/"},"articleSection":"blog","name":"Adding push notifications to static sites","headline":"Adding push notifications to static sites","description":"\u003cp\u003eWhile reading about cloudflare workers, I had this thought of can I use this to trigger push notifications for my static site that has a blog. That is what I did. In this post. I will describe the steps involved in creating push notifications using Firebase Cloud Messaging and Cloudflare workers. This post must not be considered as a tutorial but merely as a guide.\u003c\/p\u003e\n\u003cp\u003eCloudflare workers allows us to write serverless code that allows us to build API using the edge nodes of cloudflare. We will create an API that will allow the users of the site to subscribe\/unsubscribe to new post notifications. We will also use the ability of CRON triggers to automate sending notifications.\u003c\/p\u003e","inLanguage":"en-US","author":"Karthik Ganeshram","creator":"Karthik Ganeshram","publisher":"Karthik Ganeshram","accountablePerson":"Karthik Ganeshram","copyrightHolder":"Karthik Ganeshram","copyrightYear":"2021","datePublished":"2021-06-05 00:00:00 \u002b0000 UTC","dateModified":"2021-06-05 00:00:00 \u002b0000 UTC","url":"\/blog\/adding-push-notifications-to-static-sites\/","wordCount":"2198","keywords":["Blog"]}</script><title>Adding push notifications to static sites - Karthik Ganeshram</title><link rel="shortcut icon" href=/logo.png type=image/x-icon><link rel=icon href=/logo.png type=image/x-icon><link rel=canonical href=https://karthikganeshram.com/blog/adding-push-notifications-to-static-sites/><meta name=generator content="Hugo 0.157.0"><link rel=stylesheet href=/css/styles.min.bd14da1fd3f32203348b6db2b19801de1571b2ef695295a5898737900171522d.css integrity="sha256-vRTaH9PzIgM0i22ysZgB3hVxsu9pUpWliYc3kAFxUi0="><body class="font-lato text-gray-800 leading-relaxed"><header class="max-w-screen-md mx-auto text-center"><a class="text-4xl sm:text-6xl hover:text-gray-600" href=/>Karthik Ganeshram</a><nav><div class="inline-block border-t border-b border-gray-800 p-2 text-lg"><a class=hover:underline href=/ title="Home - Karthik Ganeshram" type=text/html>HOME</a>
+<span class="mr-2 ml-2">&#183;</span>
+<a class=hover:underline href=/about/ title="About - Karthik Ganeshram" type=text/html>ABOUT</a>
+<span class="hidden sm:inline mr-2 ml-2">&#183;</span><br class=sm:hidden><a class=hover:underline class=inline-block href=/blog/ title="Blog - Karthik Ganeshram" type=text/html>BLOG</a>
+<span class="mr-2 ml-2 inline-block">&#183;</span>
+<a class=hover:underline class=inline-block href=/Karthik_Ganeshram.pdf title="Resume - Karthik Ganeshram" type=text/html>RESUME</a></div></nav></header><main class="max-w-screen-md mx-auto pt-10 pb-4 px-4 lg:px-0"><h1 class="text-center text-4xl mb-2 leading-none">Adding push notifications to static sites</h1><p class="text-center mb-1 text-sm text-blue-600 uppercase tracking-wider">tutorials</p><p class="text-center mb-6 text-gray-600">Published June 5, 2021</p><div class="w-full mb-6"><img src=/NotificationMain.png alt="Header image for Adding push notifications to static sites" class="w-full h-auto object-cover"></div><article class="text-lg text-justify"><p>While reading about cloudflare workers, I had this thought of can I use this to trigger push notifications for my static site that has a blog. That is what I did. In this post. I will describe the steps involved in creating push notifications using Firebase Cloud Messaging and Cloudflare workers. This post must not be considered as a tutorial but merely as a guide.</p><p>Cloudflare workers allows us to write serverless code that allows us to build API using the edge nodes of cloudflare. We will create an API that will allow the users of the site to subscribe/unsubscribe to new post notifications. We will also use the ability of CRON triggers to automate sending notifications.</p><p><a href=https://firebase.google.com/docs/cloud-messaging>FCM</a> API allows us to send push messages to the clients to update them of new data and this is exactly what we will be using to send notifications when there are new posts in our static site. We will also use their library on the front-end to handle notifications.</p><h2 id=firebase-cloud-messaging>Firebase Cloud Messaging</h2><p>First we will need to add the library to our web app. They can be included using the script tags and it must be initiated. Refer to the <a href=https://firebase.google.com/docs/cloud-messaging/js/client>official documentation</a> for additional information. Make sure to create a project in firebase if you have not already done it.</p><h6 id=indexhtml>index.html</h6><div class=highlight><pre tabindex=0 style=background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-html data-lang=html><span style=display:flex><span>.....
+</span></span><span style=display:flex><span>&lt;<span style=color:#309;font-weight:700>script</span> <span style=color:#309>src</span><span style=color:#555>=</span><span style=color:#c30>&#34;https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js&#34;</span>&gt;&lt;/<span style=color:#309;font-weight:700>script</span>&gt;
+</span></span><span style=display:flex><span>&lt;<span style=color:#309;font-weight:700>script</span> <span style=color:#309>src</span><span style=color:#555>=</span><span style=color:#c30>&#34;https://www.gstatic.com/firebasejs/8.6.2/firebase-messaging.js&#34;</span>&gt;&lt;/<span style=color:#309;font-weight:700>script</span>&gt;
+</span></span><span style=display:flex><span>....
+</span></span></code></pre></div><h6 id=indexjs>index.js</h6><div class=highlight><pre tabindex=0 style=background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#09f;font-style:italic>// Your web app&#39;s Firebase configuration
+</span></span></span><span style=display:flex><span><span style=color:#09f;font-style:italic>// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+</span></span></span><span style=display:flex><span><span style=color:#069;font-weight:700>var</span> firebaseConfig <span style=color:#555>=</span> {
+</span></span><span style=display:flex><span>	<span style=color:#09f;font-style:italic>/* enter your firebase project details */</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>firebase.initializeApp(firebaseConfig)
+</span></span><span style=display:flex><span><span style=color:#09f;font-style:italic>// Using a redirect.
+</span></span></span></code></pre></div><p>Also create a file named &ldquo;firebase-messaging-sw.js&rdquo;. This file will contain the service worker that will handle sending notifications when it receives data from FCM. Initialize it with the following contents. We will fill in the rest later.</p><h6 id=firebase-messaging-swjs>firebase-messaging-sw.js</h6><div class=highlight><pre tabindex=0 style=background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-js data-lang=js><span style=display:flex><span>importScripts(<span style=color:#c30>&#39;https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js&#39;</span>)
+</span></span><span style=display:flex><span>importScripts(<span style=color:#c30>&#39;https://www.gstatic.com/firebasejs/8.6.2/firebase-messaging.js&#39;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#069;font-weight:700>let</span> firebaseConfig <span style=color:#555>=</span> {
+</span></span><span style=display:flex><span>	<span style=color:#09f;font-style:italic>/* enter your firebase project configurations */</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>firebase.initializeApp(firebaseConfig)
+</span></span><span style=display:flex><span><span style=color:#069;font-weight:700>const</span> messaging <span style=color:#555>=</span> firebase.messaging()
+</span></span></code></pre></div><p>Now that the initial setup of firebase is done in the client let us understand how FCM works. So when a client wants to show notifications, it requires the user to allow notifications on the website. Once the notification permission is avaibale, the messaging library of firebase can create a registration token for the user. This token is then shared with the server. The token can be used to send messages to specific devices or can be registed with FCM notifications to subscribe to a topic.</p><p>We will Be registering the token on a topic since, it is a common notification that we desire to all the users. So now let us add the functionality to create the registration token. The vapidKey is available in the cloud messaging tab of the project settings in firebase console.</p><p><img src=/FCM.jpg alt="Firebase Cloud Messaging console"><em>FCM console</em></p><h6 id=indexjs-1>index.js</h6><div class=highlight><pre tabindex=0 style=background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-js data-lang=js><span style=display:flex><span>...
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#069;font-weight:700>let</span> notificationToken
+</span></span><span style=display:flex><span><span style=color:#069;font-weight:700>let</span> notificationStatus <span style=color:#555>=</span> <span style=color:#069;font-weight:700>false</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#069;font-weight:700>const</span> getToken <span style=color:#555>=</span>  <span style=color:#069;font-weight:700>async</span> () =&gt; {
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>let</span> token <span style=color:#555>=</span> <span style=color:#069;font-weight:700>await</span> messaging.getToken({ <span style=color:#c30>&#39;&lt;YOUR_PUBLIC_VAPID_KEY_HERE&gt;&#39;</span>})
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>return</span> token
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#069;font-weight:700>const</span> main <span style=color:#555>=</span> <span style=color:#069;font-weight:700>async</span> () =&gt; {
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>if</span> (Notification.permission <span style=color:#555>!=</span> <span style=color:#c30>&#34;blocked&#34;</span>) {
+</span></span><span style=display:flex><span>		notificationToken <span style=color:#555>=</span> <span style=color:#069;font-weight:700>await</span> getToken()
+</span></span><span style=display:flex><span>		console.log(notificationToken)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>main()
+</span></span></code></pre></div><p>This script will now initially check if the notification permissions are blocked, else it will trigger the firebase function to get the token. If the permissions for notification is not granted, it will request for it. It is better to trigger the <code>getToken</code> on the request of the user, this is just to show the process.</p><p>Now we have the FCM registration token, we can look at the FCM API. We will be needing 4 APIs to get push notifications to work. We will need an API for registering and unregistering a user to topic, an API to check the status of the user and finally and most importantly the API that will allow us to push notifications to specific topics.</p><p>The reason we need to use REST APIs and not the firebase-admin package in nodejs is because that pacakge cannot be used in cloudflare workers as it depends on certain node specific features which are not available on workers.</p><div class=highlight><pre tabindex=0 style=background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#09f;font-style:italic>// FCM API
+</span></span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#09f;font-style:italic>// get user status
+</span></span></span><span style=display:flex><span><span style=color:#09f;font-style:italic>// SERVER_KEY available in firebase cloud messaging tab
+</span></span></span><span style=display:flex><span><span style=color:#09f;font-style:italic>// IID Token is the firebase messaging registration token
+</span></span></span><span style=display:flex><span><span style=color:#09f;font-style:italic>// Return an object on success, we are interested in the &#34;rel&#34; key containing the topics subscribed
+</span></span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>statusURL <span style=color:#555>=</span> <span style=color:#c30>&#34;https://iid.googleapis.com/iid/info/&lt;FCM_REGISTRATION_TOKEN&gt;&#34;</span>
+</span></span><span style=display:flex><span>statusParameters <span style=color:#555>=</span> {
+</span></span><span style=display:flex><span>	headers<span style=color:#555>:</span> {<span style=color:#c30>&#34;Authorization&#34;</span><span style=color:#555>:</span> <span style=color:#c30>&#34;key=&lt;SERVER_KEY&gt;&#34;</span>},
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#09f;font-style:italic>// Sub user 
+</span></span></span><span style=display:flex><span><span style=color:#09f;font-style:italic>// API_KEY is the same as SERVER_KEY
+</span></span></span><span style=display:flex><span><span style=color:#09f;font-style:italic>// TOPIC is the name to which we want to subscribe the user to
+</span></span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#069;font-weight:700>let</span> suburl <span style=color:#555>=</span> <span style=color:#c30>&#34;https://iid.googleapis.com/iid/v1:batchAdd&#34;</span>
+</span></span><span style=display:flex><span>subParameters <span style=color:#555>=</span> {
+</span></span><span style=display:flex><span>	<span style=color:#c30>&#34;headers&#34;</span><span style=color:#555>:</span> {
+</span></span><span style=display:flex><span>		<span style=color:#c30>&#34;Content-Type&#34;</span><span style=color:#555>:</span> <span style=color:#c30>&#34;application/json&#34;</span>,
+</span></span><span style=display:flex><span>		<span style=color:#c30>&#34;Authorization&#34;</span><span style=color:#555>:</span> <span style=color:#c30>&#34;key=&lt;API_KEY&gt;&#34;</span>},
+</span></span><span style=display:flex><span>	<span style=color:#c30>&#34;body&#34;</span><span style=color:#555>:</span> {
+</span></span><span style=display:flex><span>  	<span style=color:#c30>&#34;to&#34;</span><span style=color:#555>:</span> <span style=color:#c30>&#34;&lt;TOPIC&gt;&#34;</span>,
+</span></span><span style=display:flex><span>   	<span style=color:#c30>&#34;registration_tokens&#34;</span><span style=color:#555>:</span> [<span style=color:#c30>&#34;&lt;FCM_REGISTRATION_TOKEN&gt;&#34;</span>]
+</span></span><span style=display:flex><span>	},
+</span></span><span style=display:flex><span>	<span style=color:#c30>&#34;method&#34;</span><span style=color:#555>:</span> <span style=color:#c30>&#34;POST&#34;</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#09f;font-style:italic>// unSub user 
+</span></span></span><span style=display:flex><span><span style=color:#09f;font-style:italic>// API_KEY is the same as SERVER_KEY
+</span></span></span><span style=display:flex><span><span style=color:#09f;font-style:italic>// TOPIC is the name to which we want to subscribe the user to
+</span></span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#069;font-weight:700>let</span> unsubURL <span style=color:#555>=</span> <span style=color:#c30>&#34;https://iid.googleapis.com/iid/v1:batchRemove&#34;</span>
+</span></span><span style=display:flex><span>unsubParameters <span style=color:#555>=</span> {
+</span></span><span style=display:flex><span>	<span style=color:#c30>&#34;headers&#34;</span><span style=color:#555>:</span> {
+</span></span><span style=display:flex><span>		<span style=color:#c30>&#34;Content-Type&#34;</span><span style=color:#555>:</span> <span style=color:#c30>&#34;application/json&#34;</span>,
+</span></span><span style=display:flex><span>		<span style=color:#c30>&#34;Authorization&#34;</span><span style=color:#555>:</span> <span style=color:#c30>&#34;key=&lt;API_KEY&gt;&#34;</span>},
+</span></span><span style=display:flex><span>	<span style=color:#c30>&#34;body&#34;</span><span style=color:#555>:</span> {
+</span></span><span style=display:flex><span>  	<span style=color:#c30>&#34;to&#34;</span><span style=color:#555>:</span> <span style=color:#c30>&#34;&lt;TOPIC&gt;&#34;</span>,
+</span></span><span style=display:flex><span>  	<span style=color:#c30>&#34;registration_tokens&#34;</span><span style=color:#555>:</span> [<span style=color:#c30>&#34;&lt;FCM_REGISTRATION_TOKEN&gt;&#34;</span>]
+</span></span><span style=display:flex><span>	},
+</span></span><span style=display:flex><span>	<span style=color:#c30>&#34;method&#34;</span><span style=color:#555>:</span> <span style=color:#c30>&#34;POST&#34;</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#09f;font-style:italic>// Send notification
+</span></span></span><span style=display:flex><span><span style=color:#09f;font-style:italic>// GOOGLE_OAUTH_ACCESS_TOKEN is needed 
+</span></span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#069;font-weight:700>let</span> topicNotificationURL <span style=color:#555>=</span><span style=color:#c30>&#34;https://fcm.googleapis.com/v1/projects/329859626245/messages:send&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#069;font-weight:700>let</span> topicNotificationParameter <span style=color:#555>=</span> {
+</span></span><span style=display:flex><span>		body<span style=color:#555>:</span> {
+</span></span><span style=display:flex><span>			<span style=color:#c30>&#34;message&#34;</span><span style=color:#555>:</span> {
+</span></span><span style=display:flex><span>				<span style=color:#c30>&#34;data&#34;</span><span style=color:#555>:</span> { <span style=color:#c30>&#34;body&#34;</span><span style=color:#555>:</span> data.title, <span style=color:#c30>&#34;title&#34;</span><span style=color:#555>:</span> <span style=color:#c30>&#34;New Post!&#34;</span>, <span style=color:#c30>&#34;image&#34;</span><span style=color:#555>:</span> <span style=color:#c30>&#34;https://karthikganeshram.in&#34;</span> <span style=color:#555>+</span> data.image, <span style=color:#c30>&#34;tag&#34;</span><span style=color:#555>:</span> data.tag, <span style=color:#c30>&#34;url&#34;</span><span style=color:#555>:</span> <span style=color:#c30>&#34;https://karthikganeshram.in&#34;</span> <span style=color:#555>+</span> data.url},
+</span></span><span style=display:flex><span>				<span style=color:#c30>&#34;topic&#34;</span><span style=color:#555>:</span> <span style=color:#c30>&#34;newPost&#34;</span>
+</span></span><span style=display:flex><span>			}
+</span></span><span style=display:flex><span>		},
+</span></span><span style=display:flex><span>		headers<span style=color:#555>:</span> {
+</span></span><span style=display:flex><span>			Authorization<span style=color:#555>:</span> <span style=color:#c30>&#34;Bearer &#34;</span> <span style=color:#555>+</span> GOOGLE_OAUTH_ACCESS_TOKEN,
+</span></span><span style=display:flex><span>			<span style=color:#c30>&#34;Content-Type&#34;</span><span style=color:#555>:</span> <span style=color:#c30>&#34;application/json&#34;</span>
+</span></span><span style=display:flex><span>		},
+</span></span><span style=display:flex><span>		method<span style=color:#555>:</span> <span style=color:#c30>&#34;POST&#34;</span>
+</span></span><span style=display:flex><span>	}
+</span></span></code></pre></div><p>I decided to use the batch api for add and remove as I was not able to find the remove api for a single token and wanted to maintain consitency in the API. Now we can test out the commands using curl. We have everything required to test the API except the <code>GOOGLE_OAUTH_ACCESS_TOKEN</code>. The method to obtain it will be explained soon. In the meantime you can use the &ldquo;Notifcation composer&rdquo; in firebase console to send test messages after you get the registration token.</p><h2 id=cloudflare-workers>Cloudflare workers</h2><p>Now it is time to move onto workers. It is assumed that the reader has some familiarity with the basics of cloudflare workers. If not don&rsquo;t worry, the <a href=https://developers.cloudflare.com/workers/>documentation and examples</a> will get you started. As explained earlier we will have to use REST APIs instead of the firebase-admin package as it is not compatible. Therefore we must manually retrieve the Oauth token for the google api. This excellent example from <a href=https://community.cloudflare.com/t/example-google-oauth-2-0-for-service-accounts-using-cf-worker/258220>cloudflare community</a> will get us started. Now that we are able to retrieve google Oauth tokens, we can use curl to test the apis from the command line.</p><p>Let us build the API for the in the workers that our website will use. We will have 3 rest API end points. One each for subStatus, sub and unsub. We will also add a function to send the notification. These are the 4 apis described above. We will also need to add worker secrets for SERVER_KEY and email address of service account in firebase and the private key.</p><h6 id=indexjscloudflare-worker>index.js(cloudflare worker)</h6><div class=highlight><pre tabindex=0 style=background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#069;font-weight:700>async</span> <span style=color:#069;font-weight:700>function</span> getToken(){
+</span></span><span style=display:flex><span>	<span style=color:#09f;font-style:italic>/* Use the function provided in the example above and return the token*/</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#069;font-weight:700>async</span> <span style=color:#069;font-weight:700>function</span> subStatus(data) {
+</span></span><span style=display:flex><span>	console.log(data.token)
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>let</span> res <span style=color:#555>=</span> <span style=color:#069;font-weight:700>await</span> fetch(<span style=color:#c30>&#34;https://iid.googleapis.com/iid/info/&#34;</span> <span style=color:#555>+</span> data.token <span style=color:#555>+</span> <span style=color:#c30>&#34;?details=true&#34;</span>, {
+</span></span><span style=display:flex><span>		headers<span style=color:#555>:</span> { Authorization<span style=color:#555>:</span> <span style=color:#c30>&#34;key=&#34;</span> <span style=color:#555>+</span> SERVER_KEY },
+</span></span><span style=display:flex><span>		method<span style=color:#555>:</span> <span style=color:#c30>&#34;GET&#34;</span>
+</span></span><span style=display:flex><span>	})
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>if</span> (<span style=color:#555>!</span>res.ok) {
+</span></span><span style=display:flex><span>		<span style=color:#069;font-weight:700>return</span> { results<span style=color:#555>:</span> <span style=color:#c30>&#34;failed&#34;</span> }
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>else</span> {
+</span></span><span style=display:flex><span>		<span style=color:#069;font-weight:700>let</span> data <span style=color:#555>=</span> <span style=color:#069;font-weight:700>await</span> res.json()
+</span></span><span style=display:flex><span>		<span style=color:#069;font-weight:700>return</span> { results<span style=color:#555>:</span> <span style=color:#c30>&#34;success&#34;</span>, subStatus<span style=color:#555>:</span> (data.rel<span style=color:#555>?</span>.topics<span style=color:#555>?</span>.newPost <span style=color:#555>?</span> <span style=color:#069;font-weight:700>true</span> <span style=color:#555>:</span> <span style=color:#069;font-weight:700>false</span>) }
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#069;font-weight:700>async</span> <span style=color:#069;font-weight:700>function</span> subUnsub(data, action) {
+</span></span><span style=display:flex><span>	console.log(data.token)
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>let</span> res <span style=color:#555>=</span> <span style=color:#069;font-weight:700>await</span> fetch(<span style=color:#c30>&#34;https://iid.googleapis.com/iid/v1:batch&#34;</span> <span style=color:#555>+</span> action, {
+</span></span><span style=display:flex><span>		body<span style=color:#555>:</span> JSON.stringify({ <span style=color:#c30>&#34;to&#34;</span><span style=color:#555>:</span> <span style=color:#c30>&#34;/topics/newPost&#34;</span>, <span style=color:#c30>&#34;registration_tokens&#34;</span><span style=color:#555>:</span> [data.token] }),
+</span></span><span style=display:flex><span>		headers<span style=color:#555>:</span> {
+</span></span><span style=display:flex><span>			Authorization<span style=color:#555>:</span> <span style=color:#c30>&#34;key=&#34;</span> <span style=color:#555>+</span> SERVER_KEY,
+</span></span><span style=display:flex><span>			<span style=color:#c30>&#34;Content-Type&#34;</span><span style=color:#555>:</span> <span style=color:#c30>&#34;application/json&#34;</span>
+</span></span><span style=display:flex><span>		},
+</span></span><span style=display:flex><span>		method<span style=color:#555>:</span> <span style=color:#c30>&#34;POST&#34;</span>
+</span></span><span style=display:flex><span>	})
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>if</span> (<span style=color:#555>!</span>res.ok) {
+</span></span><span style=display:flex><span>		<span style=color:#069;font-weight:700>return</span> { results<span style=color:#555>:</span> <span style=color:#c30>&#34;failed&#34;</span> }
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>else</span> {
+</span></span><span style=display:flex><span>		<span style=color:#069;font-weight:700>return</span> { results<span style=color:#555>:</span> <span style=color:#c30>&#34;success&#34;</span> }
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#069;font-weight:700>async</span> <span style=color:#069;font-weight:700>function</span> sendNotification(data) {
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>let</span> res <span style=color:#555>=</span> <span style=color:#069;font-weight:700>await</span> fetch(<span style=color:#c30>&#34;https://fcm.googleapis.com/v1/projects/329859626245/messages:send&#34;</span>, {
+</span></span><span style=display:flex><span>		body<span style=color:#555>:</span> JSON.stringify({
+</span></span><span style=display:flex><span>			<span style=color:#c30>&#34;message&#34;</span><span style=color:#555>:</span> {
+</span></span><span style=display:flex><span>				<span style=color:#c30>&#34;data&#34;</span><span style=color:#555>:</span> { <span style=color:#c30>&#34;body&#34;</span><span style=color:#555>:</span> data.title, <span style=color:#c30>&#34;title&#34;</span><span style=color:#555>:</span> <span style=color:#c30>&#34;New Post!&#34;</span>, <span style=color:#c30>&#34;image&#34;</span><span style=color:#555>:</span> data.image, <span style=color:#c30>&#34;tag&#34;</span><span style=color:#555>:</span> data.tag, <span style=color:#c30>&#34;url&#34;</span><span style=color:#555>:</span> data.url},
+</span></span><span style=display:flex><span>				<span style=color:#c30>&#34;topic&#34;</span><span style=color:#555>:</span> <span style=color:#c30>&#34;newPost&#34;</span>
+</span></span><span style=display:flex><span>			}
+</span></span><span style=display:flex><span>		}),
+</span></span><span style=display:flex><span>		headers<span style=color:#555>:</span> {
+</span></span><span style=display:flex><span>			Authorization<span style=color:#555>:</span> <span style=color:#c30>&#34;Bearer &#34;</span> <span style=color:#555>+</span> GOOGLE_OAUTH_ACCESS_TOKEN,
+</span></span><span style=display:flex><span>			<span style=color:#c30>&#34;Content-Type&#34;</span><span style=color:#555>:</span> <span style=color:#c30>&#34;application/json&#34;</span>
+</span></span><span style=display:flex><span>		},
+</span></span><span style=display:flex><span>		method<span style=color:#555>:</span> <span style=color:#c30>&#34;POST&#34;</span>
+</span></span><span style=display:flex><span>	})
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>if</span> (<span style=color:#555>!</span>res.ok) {
+</span></span><span style=display:flex><span>		<span style=color:#069;font-weight:700>return</span> { results<span style=color:#555>:</span> <span style=color:#c30>&#34;failed&#34;</span> }
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>else</span> {
+</span></span><span style=display:flex><span>		<span style=color:#069;font-weight:700>return</span> { results<span style=color:#555>:</span> <span style=color:#c30>&#34;success&#34;</span> }
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#069;font-weight:700>async</span> <span style=color:#069;font-weight:700>function</span> handleRequest(request) {
+</span></span><span style=display:flex><span>	console.log(<span style=color:#c30>&#34;here&#34;</span>)
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>let</span> url <span style=color:#555>=</span> <span style=color:#069;font-weight:700>new</span> URL(request.url)
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>let</span> response
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>if</span> (request.method <span style=color:#555>===</span> <span style=color:#c30>&#34;POST&#34;</span>) {
+</span></span><span style=display:flex><span>		<span style=color:#069;font-weight:700>const</span> { headers } <span style=color:#555>=</span> request
+</span></span><span style=display:flex><span>		<span style=color:#069;font-weight:700>if</span> (headers.get(<span style=color:#c30>&#34;content-type&#34;</span>) <span style=color:#555>==</span> <span style=color:#c30>&#34;application/json&#34;</span>) {
+</span></span><span style=display:flex><span>			<span style=color:#069;font-weight:700>switch</span> (url.pathname) {
+</span></span><span style=display:flex><span>				<span style=color:#069;font-weight:700>case</span> <span style=color:#c30>&#34;/api/notify/sub&#34;</span><span style=color:#555>:</span>
+</span></span><span style=display:flex><span>					response <span style=color:#555>=</span> <span style=color:#069;font-weight:700>await</span> subUnsub((<span style=color:#069;font-weight:700>await</span> request.json()), <span style=color:#c30>&#34;Add&#34;</span>)
+</span></span><span style=display:flex><span>					<span style=color:#069;font-weight:700>break</span>
+</span></span><span style=display:flex><span>				<span style=color:#069;font-weight:700>case</span> <span style=color:#c30>&#34;/api/notify/unsub&#34;</span><span style=color:#555>:</span>
+</span></span><span style=display:flex><span>					response <span style=color:#555>=</span> <span style=color:#069;font-weight:700>await</span> subUnsub((<span style=color:#069;font-weight:700>await</span> request.json()), <span style=color:#c30>&#34;Remove&#34;</span>)
+</span></span><span style=display:flex><span>					<span style=color:#069;font-weight:700>break</span>
+</span></span><span style=display:flex><span>				<span style=color:#069;font-weight:700>case</span> <span style=color:#c30>&#34;/api/notify/subStatus&#34;</span><span style=color:#555>:</span>
+</span></span><span style=display:flex><span>					response <span style=color:#555>=</span> <span style=color:#069;font-weight:700>await</span> subStatus(<span style=color:#069;font-weight:700>await</span> request.json())
+</span></span><span style=display:flex><span>					<span style=color:#069;font-weight:700>break</span>
+</span></span><span style=display:flex><span>			}
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>else</span> {
+</span></span><span style=display:flex><span>		response <span style=color:#555>=</span> {results<span style=color:#555>:</span> <span style=color:#c30>&#34;Invalid URL&#34;</span>}
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>return</span> <span style=color:#069;font-weight:700>new</span> Response(JSON.stringify(response), {
+</span></span><span style=display:flex><span>		headers<span style=color:#555>:</span> { <span style=color:#c30>&#39;content-type&#39;</span><span style=color:#555>:</span> <span style=color:#c30>&#39;application/json&#39;</span>, <span style=color:#c30>&#39;Access-Control-Allow-Origin&#39;</span><span style=color:#555>:</span> <span style=color:#c30>&#39;*&#39;</span>, <span style=color:#c30>&#39;Access-Control-Allow-Credentials&#39;</span><span style=color:#555>:</span> <span style=color:#c30>&#39;true&#39;</span> },
+</span></span><span style=display:flex><span>	})
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>addEventListener(<span style=color:#c30>&#34;fetch&#34;</span>, event =&gt; {
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>const</span> request <span style=color:#555>=</span> event.request
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>if</span> (
+</span></span><span style=display:flex><span>		request.method <span style=color:#555>===</span> <span style=color:#c30>&#34;POST&#34;</span>
+</span></span><span style=display:flex><span>	) {
+</span></span><span style=display:flex><span>		console.log(<span style=color:#c30>&#34;here&#34;</span>)
+</span></span><span style=display:flex><span>		event.respondWith(handleRequest(request))
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>else</span> {
+</span></span><span style=display:flex><span>		event.respondWith(
+</span></span><span style=display:flex><span>			<span style=color:#069;font-weight:700>new</span> Response(<span style=color:#069;font-weight:700>null</span>, {
+</span></span><span style=display:flex><span>				status<span style=color:#555>:</span> <span style=color:#f60>405</span>,
+</span></span><span style=display:flex><span>				statusText<span style=color:#555>:</span> <span style=color:#c30>&#34;Method Not Allowed&#34;</span>,
+</span></span><span style=display:flex><span>			}),
+</span></span><span style=display:flex><span>		)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>})
+</span></span></code></pre></div><p>You may notice that the <code>sendNotificaion</code> function is not being used. If you want to keep it simple and send the push notifications manually, you can add an api endpoint for the push notification but we will go one step further and automate it using CRON triggers so it will become clearer in just a bit. Now how do we automatically detect if the website has been updated. Well let us find out.</p><p>We need to create a new page on our website which will be a static website that will be updated with the details of the last post along with the time it was updated. We will use CRON triggers on the cloudflare worker to check periodically if there was a new post. If there is a new post we push notifications.</p><p>Now to compare if the date specified on the api is newer than the last notification, we must be able to store global variables in the worker script, that is where cloudflare kv comes in. Let us create a namespace for kv. Namespaces in cloudflare are nothing but a way to reference the objects in the worker script. Run the following command in the command line and save its output to &ldquo;wrangler.toml&rdquo;.</p><div class=highlight><pre tabindex=0 style=background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-js data-lang=js><span style=display:flex><span>wrangler kv<span style=color:#555>:</span>namespace create <span style=color:#c30>&#34;NOTIFICATIONS_KV_DB&#34;</span>
+</span></span></code></pre></div><p>Now let us add a function to check if there is a newer post. I use github pages for my static site so I used the raw user content file from the repository as my api. The return of the API is a JSON that has the required parameters. An example response is as below.</p><div class=highlight><pre tabindex=0 style=background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-js data-lang=js><span style=display:flex><span>{<span style=color:#c30>&#34;Date&#34;</span><span style=color:#555>:</span> <span style=color:#f60>1623083600005</span>,<span style=color:#c30>&#34;title&#34;</span><span style=color:#555>:</span> <span style=color:#c30>&#34;Be selfish to be selfless&#34;</span>,<span style=color:#c30>&#34;url&#34;</span><span style=color:#555>:</span><span style=color:#c30>&#34;/blog/posts/be-selfish-to-be-selfless/&#34;</span>, <span style=color:#c30>&#34;image&#34;</span><span style=color:#555>:</span><span style=color:#c30>&#34;/manInSunset.jpg&#34;</span>, <span style=color:#c30>&#34;tag&#34;</span><span style=color:#555>:</span> <span style=color:#c30>&#34;Life&#34;</span>}
+</span></span></code></pre></div><h6 id=indexjscloudflare-worker-1>index.js(cloudflare worker)</h6><div class=highlight><pre tabindex=0 style=background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#069;font-weight:700>const</span> setCache <span style=color:#555>=</span> data =&gt; NOTIFICATIONS_KV_DB.put(<span style=color:#c30>&#34;lastPostTime&#34;</span>, data)
+</span></span><span style=display:flex><span><span style=color:#069;font-weight:700>const</span> getCache <span style=color:#555>=</span> () =&gt; NOTIFICATIONS_KV_DB.get(<span style=color:#c30>&#34;lastPostTime&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#069;font-weight:700>async</span> <span style=color:#069;font-weight:700>function</span> checkLatestPost() {
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>let</span> cache <span style=color:#555>=</span> <span style=color:#069;font-weight:700>await</span> getCache()
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>if</span> (<span style=color:#555>!</span>cache) {
+</span></span><span style=display:flex><span>		console.log(<span style=color:#c30>&#34;settimg cache&#34;</span>)
+</span></span><span style=display:flex><span>		lastBlogPost <span style=color:#555>=</span> <span style=color:#f60>0</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>else</span> {
+</span></span><span style=display:flex><span>		lastBlogPost <span style=color:#555>=</span> <span style=color:#366>parseInt</span>(cache)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>let</span> res <span style=color:#555>=</span> <span style=color:#069;font-weight:700>await</span> fetch(<span style=color:#c30>&#34;&lt;Static JSON API&gt;&#34;</span>, {
+</span></span><span style=display:flex><span>		method<span style=color:#555>:</span> <span style=color:#c30>&#34;GET&#34;</span>
+</span></span><span style=display:flex><span>	})
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>if</span> (<span style=color:#555>!</span>res.ok) {
+</span></span><span style=display:flex><span>		<span style=color:#069;font-weight:700>return</span> { results<span style=color:#555>:</span> <span style=color:#c30>&#34;failed&#34;</span> }
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>else</span> {
+</span></span><span style=display:flex><span>		<span style=color:#069;font-weight:700>let</span> test <span style=color:#555>=</span> <span style=color:#069;font-weight:700>await</span> res.text()
+</span></span><span style=display:flex><span>		console.log(<span style=color:#c30>&#34;succeded &#34;</span>, res.status, JSON.parse(test))
+</span></span><span style=display:flex><span>		<span style=color:#069;font-weight:700>let</span> data <span style=color:#555>=</span> JSON.parse(test)
+</span></span><span style=display:flex><span>		<span style=color:#069;font-weight:700>if</span> (lastBlogPost <span style=color:#555>&lt;</span> data.<span style=color:#366>Date</span>) {
+</span></span><span style=display:flex><span>			<span style=color:#069;font-weight:700>let</span> GOOGLE_OAUTH_ACCESS_TOKEN <span style=color:#555>=</span> <span style=color:#069;font-weight:700>await</span> getToken()
+</span></span><span style=display:flex><span>			<span style=color:#069;font-weight:700>let</span> response <span style=color:#555>=</span> <span style=color:#069;font-weight:700>await</span> sendNotification(data)
+</span></span><span style=display:flex><span>			<span style=color:#069;font-weight:700>if</span> (response.results <span style=color:#555>===</span> <span style=color:#c30>&#34;success&#34;</span>) {
+</span></span><span style=display:flex><span>				lastBlogPost <span style=color:#555>=</span> data.<span style=color:#366>Date</span>
+</span></span><span style=display:flex><span>				<span style=color:#069;font-weight:700>await</span> setCache(JSON.stringify(data.<span style=color:#366>Date</span>))
+</span></span><span style=display:flex><span>			}
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>		<span style=color:#069;font-weight:700>return</span> { results<span style=color:#555>:</span> <span style=color:#c30>&#34;success&#34;</span> }
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>addEventListener(<span style=color:#c30>&#34;scheduled&#34;</span>, event =&gt; {
+</span></span><span style=display:flex><span>	event.waitUntil(checkLatestPost(event))
+</span></span><span style=display:flex><span>})
+</span></span></code></pre></div><p>Now create a CRON trigger using wrangler with the appropriate duration.</p><h2 id=eleventy-static-api>Eleventy Static API</h2><p>Creating a static API with eleventy is rather straightforward. We just need to create a template file similar to</p><h6 id=lastestpostjson>lastestPost.json</h6><p>{% raw %}</p><div class=highlight><pre tabindex=0 style=background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#555>---</span>
+</span></span><span style=display:flex><span>permalink<span style=color:#555>:</span> <span style=color:#a00;background-color:#faa>/api/latestPost.json</span>
+</span></span><span style=display:flex><span><span style=color:#555>---</span>
+</span></span><span style=display:flex><span>{<span style=color:#555>%</span> set latestPost <span style=color:#555>=</span> collections[<span style=color:#c30>&#34;post&#34;</span>].reverse()[<span style=color:#f60>0</span>] <span style=color:#555>%</span>}
+</span></span><span style=display:flex><span>{<span style=color:#c30>&#34;Date&#34;</span><span style=color:#555>:</span> <span style=color:#f60>1623083600005</span>,<span style=color:#c30>&#34;title&#34;</span><span style=color:#555>:</span> <span style=color:#c30>&#34;{{latestPost.data.title}}&#34;</span>,<span style=color:#c30>&#34;url&#34;</span><span style=color:#555>:</span><span style=color:#c30>&#34;{{latestPost.url}}&#34;</span>, <span style=color:#c30>&#34;image&#34;</span><span style=color:#555>:</span><span style=color:#c30>&#34;{{latestPost.data.mainImage}}&#34;</span>, <span style=color:#c30>&#34;tag&#34;</span><span style=color:#555>:</span> <span style=color:#c30>&#34;{{latestPost.data.tags[1]}}&#34;</span>}
+</span></span><span style=display:flex><span>{<span style=color:#555>%</span> endraw <span style=color:#555>%</span>}
+</span></span></code></pre></div><h2 id=handling-notifications-on-client>Handling notifications on client</h2><p>Now that we have all the parts working, We now add the functions to add/remove user from topic and also check the status of the user. I will let the process of calling them based on the action of the users upto you. we can create the event handlers to handle the notification when it arrives.</p><h6 id=indexjs-2>index.js</h6><div class=highlight><pre tabindex=0 style=background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#069;font-weight:700>const</span> enableNotifications <span style=color:#555>=</span> <span style=color:#069;font-weight:700>async</span> () =&gt; {
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>if</span> (Notification.permission <span style=color:#555>===</span> <span style=color:#c30>&#34;granted&#34;</span>) {
+</span></span><span style=display:flex><span>		notificationToken <span style=color:#555>=</span> <span style=color:#069;font-weight:700>await</span> getToken()
+</span></span><span style=display:flex><span>		subscribteTopic()
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>else</span> <span style=color:#069;font-weight:700>if</span> (Notification.permission <span style=color:#555>===</span> <span style=color:#c30>&#34;blocked&#34;</span>) {
+</span></span><span style=display:flex><span>		alert(<span style=color:#c30>&#34;Notification permissions have been blocked, enable notifications permission manually&#34;</span>)
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>else</span> {
+</span></span><span style=display:flex><span>		alert(<span style=color:#c30>&#34;Now you will be asked for notification permissions&#34;</span>)
+</span></span><span style=display:flex><span>		notificationToken <span style=color:#555>=</span> <span style=color:#069;font-weight:700>await</span> getToken()
+</span></span><span style=display:flex><span>		subscribteTopic()
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#069;font-weight:700>const</span> subscribteTopic() =&gt; {
+</span></span><span style=display:flex><span>	subUnsub(<span style=color:#c30>&#34;sub&#34;</span>)
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#069;font-weight:700>const</span> disableNotifications <span style=color:#555>=</span> <span style=color:#069;font-weight:700>async</span> () =&gt; {
+</span></span><span style=display:flex><span>	notificationToken <span style=color:#555>=</span> <span style=color:#069;font-weight:700>await</span> getToken()
+</span></span><span style=display:flex><span>	subUnsub(<span style=color:#c30>&#34;unsub&#34;</span>)
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#069;font-weight:700>const</span> subUnsub <span style=color:#555>=</span> (action) =&gt; {
+</span></span><span style=display:flex><span>	fetch(notifyApiUrl <span style=color:#555>+</span> action, {
+</span></span><span style=display:flex><span>		body<span style=color:#555>:</span> JSON.stringify({ <span style=color:#c30>&#34;token&#34;</span><span style=color:#555>:</span> notificationToken }),
+</span></span><span style=display:flex><span>		headers<span style=color:#555>:</span> {
+</span></span><span style=display:flex><span>			<span style=color:#c30>&#39;Content-Type&#39;</span><span style=color:#555>:</span> <span style=color:#c30>&#39;application/json&#39;</span>
+</span></span><span style=display:flex><span>		},
+</span></span><span style=display:flex><span>		method<span style=color:#555>:</span> <span style=color:#c30>&#34;POST&#34;</span>
+</span></span><span style=display:flex><span>	}).then(res =&gt; res.json()).then(data =&gt; {
+</span></span><span style=display:flex><span>		<span style=color:#069;font-weight:700>if</span> (data.results <span style=color:#555>===</span> <span style=color:#c30>&#34;success&#34;</span>) {
+</span></span><span style=display:flex><span>			console.log(<span style=color:#c30>&#34;success&#34;</span>)
+</span></span><span style=display:flex><span>			notificationStatus <span style=color:#555>=</span> (action <span style=color:#555>===</span> <span style=color:#c30>&#34;sub&#34;</span> <span style=color:#555>?</span> <span style=color:#069;font-weight:700>true</span> <span style=color:#555>:</span> <span style=color:#069;font-weight:700>false</span>)
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>	})
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#069;font-weight:700>const</span> subStatus() {
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>await</span> fetch(notifyApiUrl <span style=color:#555>+</span> <span style=color:#c30>&#34;subStatus&#34;</span>, {
+</span></span><span style=display:flex><span>		body<span style=color:#555>:</span> JSON.stringify({ <span style=color:#c30>&#34;token&#34;</span><span style=color:#555>:</span> notificationToken }),
+</span></span><span style=display:flex><span>		headers<span style=color:#555>:</span> { <span style=color:#c30>&#39;Content-Type&#39;</span><span style=color:#555>:</span> <span style=color:#c30>&#39;application/json&#39;</span> },
+</span></span><span style=display:flex><span>		method<span style=color:#555>:</span> <span style=color:#c30>&#34;POST&#34;</span>
+</span></span><span style=display:flex><span>		})
+</span></span><span style=display:flex><span>		data <span style=color:#555>=</span> <span style=color:#069;font-weight:700>await</span> res.json()
+</span></span><span style=display:flex><span>		<span style=color:#069;font-weight:700>return</span> data
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>messaging.onMessage((payload) =&gt; {
+</span></span><span style=display:flex><span>	console.log(<span style=color:#c30>&#39;Message received. &#39;</span>, payload)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>Now finally to handling the notifications in the service worker. We create a notification object with the data that we receive from the push notification.</p><p><img src=/mobNotif.jpg alt="Mobile push notification"><em>Push notification on mobile</em></p><h6 id=firebase-messaging-swjs-1>firebase-messaging-sw.js</h6><div class=highlight><pre tabindex=0 style=background-color:#f0f3f3;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-js data-lang=js><span style=display:flex><span>messaging.setBackgroundMessageHandler((payload) =&gt; {
+</span></span><span style=display:flex><span>	console.log(<span style=color:#c30>&#39;[firebase-messaging-sw.js] Received background message &#39;</span>, payload);
+</span></span><span style=display:flex><span>	<span style=color:#09f;font-style:italic>// Customize notification here
+</span></span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>const</span> notificationTitle <span style=color:#555>=</span> payload.data.title;
+</span></span><span style=display:flex><span>	<span style=color:#069;font-weight:700>const</span> notificationOptions <span style=color:#555>=</span> {
+</span></span><span style=display:flex><span>		body<span style=color:#555>:</span> payload.data.body,
+</span></span><span style=display:flex><span>		image<span style=color:#555>:</span> payload.data.image,
+</span></span><span style=display:flex><span>	};
+</span></span><span style=display:flex><span>	myUrl <span style=color:#555>=</span> payload.data.url;
+</span></span><span style=display:flex><span>    self.addEventListener(<span style=color:#c30>&#39;notificationclick&#39;</span>, <span style=color:#069;font-weight:700>function</span>(event) {
+</span></span><span style=display:flex><span>        event.waitUntil(self.clients.openWindow(myUrl));
+</span></span><span style=display:flex><span>        event.notification.close();
+</span></span><span style=display:flex><span>    })
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	self.registration.showNotification(notificationTitle,notificationOptions);
+</span></span><span style=display:flex><span>});
+</span></span></code></pre></div><p>And voilà, there we have working push notifications whenever there is a new post on my website. I will add some common issues you may face.</p><h3 id=note>Note</h3><ul><li>CORS error when using testing with localhost. The <a href=https://support.cloudflare.com/hc/en-us/articles/200308847-Using-cross-origin-resource-sharing-CORS-with-Cloudflare>cloudflare example</a> will help.</li></ul><p>If you need any futher detail or the post is missing, please leave a comment or contact me via my <a href=mailto:raams.karthik@gmail.com>email</a>.</p></article></main><footer class="max-w-screen-md mx-auto mt-12 px-4 mb-4"><div class="border-t border-gray-800 pt-4"><div class="flex justify-around space-x-20 mb-5 text-gray-600 text-sm font-medium"><a href=/travels class=hover:underline title="Travel Log">Travel Log</a>
+<a href=/reading class=hover:underline title="Reading List">Reading List</a></div><div class="flex flex-col sm:flex-row justify-center items-center text-md"><p class="mb-3 sm:mb-0 text-center sm:text-left px-2">&copy; Karthik Ganeshram · 2026</p><div class="flex space-x-8"><a href=https://www.linkedin.com/in/karthik-ganeshram-053830153/ title=LinkedIn aria-label=LinkedIn><img src=/linkedin.svg alt=LinkedIn class="h-5 w-5 hover:opacity-80 mx-2">
+</a><a href=https://github.com/karthik2804 title=GitHub aria-label=GitHub><img src=/github.svg alt=GitHub class="h-5 w-5 hover:opacity-80 mx-2">
+</a><a href="mailto:raams.karthik@gmail.com?subject=Hi Karthik nice to meet you" title=Email aria-label=Email><img src=/mail.svg alt=Email class="h-5 w-5 hover:opacity-80 mx-2">
+</a><a href=/index.xml title=RSS aria-label=RSS><img src=/rss.svg alt=RSS class="h-5 w-5 hover:opacity-80 mx-2"></a></div></div></div></footer></body></html>
