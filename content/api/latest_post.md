@@ -5,6 +5,6 @@ outputs:
 layout: latest_post
 url: "/api/latest_post.json"
 type: "api"
-_build:
+build:
   render: always
 ---
