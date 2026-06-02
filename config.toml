@@ -1,5 +1,5 @@
 baseURL = "/"
-languageCode = "en-us"
+locale = "en-us"
 title = "Karthik Ganeshram"
 theme = "karthik-www-theme"
 googleAnalytics = "UA-129268689-2"
