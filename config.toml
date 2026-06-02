@@ -29,3 +29,6 @@ unsafe = true
 [outputFormats.JSON]
 mediaType = "application/json"
 isPlainText = true
+
+[security.node.permissions]
+disable = true
