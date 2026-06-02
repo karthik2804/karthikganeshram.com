@@ -21,9 +21,6 @@ module.exports = {
       defaultExtractor: (content) => content.match(/[\w-/:]+(?<!:)/g) || [],
       fontFace: true,
     }),
-    require("autoprefixer")({
-      grid: true,
-    }),
     require("postcss-reporter"),
   ],
 };
