@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@plugin "@tailwindcss/typography";
 /* Site Specific */
 /* purgecss start ignore */
 @import "./site.css";

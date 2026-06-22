@@ -1,28 +1,29 @@
 {
-    "name": "karthikganeshram.com",
-    "version": "0.0.1",
-    "description": "Theme for karthikganeshram.com blog",
-    "main": "index.js",
-    "repository": "",
-    "author": "Karthik Ganeshram",
-    "scripts": {
-        "start": "hugo server -D"
-    },
-    "devDependencies": {
-        "@fullhuman/postcss-purgecss": "^2.1.0",
-        "autoprefixer": "^9.7.4",
-        "postcss": "^7.0.36",
-        "postcss-cli": "^7.1.0",
-        "postcss-import": "^12.0.1",
-        "tailwindcss": "^1.2.0"
-    },
-    "browserslist": [
-        "last 1 version",
-        "> 1%",
-        "maintained node versions",
-        "not dead"
-    ],
-    "dependencies": {
-        "typeface-lato": "0.0.75"
-    }
+  "name": "karthikganeshram.com",
+  "version": "0.0.1",
+  "description": "Theme for karthikganeshram.com blog",
+  "main": "index.js",
+  "repository": "",
+  "author": "Karthik Ganeshram",
+  "scripts": {
+    "start": "hugo server -D"
+  },
+  "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^2.1.0",
+    "@tailwindcss/typography": "^0.5.20",
+    "autoprefixer": "^9.7.4",
+    "postcss": "^7.0.36",
+    "postcss-cli": "^7.1.0",
+    "postcss-import": "^12.0.1",
+    "tailwindcss": "^4.3.0"
+  },
+  "browserslist": [
+    "last 1 version",
+    "> 1%",
+    "maintained node versions",
+    "not dead"
+  ],
+  "dependencies": {
+    "typeface-lato": "0.0.75"
+  }
 }

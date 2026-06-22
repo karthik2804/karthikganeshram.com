@@ -5,26 +5,26 @@
 
 {{ with .Params.categories }}
 <p class="text-center mb-1 text-sm text-blue-600 uppercase tracking-wider">
-  {{ range $index, $cat := . }} {{ if $index }}, {{ end }}{{ $cat }} {{ end }}
+    {{ range $index, $cat := . }} {{ if $index }}, {{ end }}{{ $cat }} {{ end }}
 </p>
 {{ end }}
 
 <p class="text-center mb-6 text-gray-600">
-  Published {{ dateFormat "January 2, 2006" .Date }}
+    Published {{ dateFormat "January 2, 2006" .Date }}
 </p>
 
 <!-- Header Image -->
 {{ with .Params.header_image }}
 <div class="w-full mb-6">
-  <img
-    src="{{ . | relURL }}"
-    alt="Header image for {{ $.Title }}"
-    class="w-full h-auto object-cover"
-  />
+    <img
+        src="{{ . | relURL }}"
+        alt="Header image for {{ $.Title }}"
+        class="w-full h-auto object-cover"
+    />
 </div>
 {{ end }}
 
 <!-- Post Content -->
-<article class="text-lg text-justify">{{ .Content }}</article>
+<article class="prose prose-lg text-left max-w-none">{{ .Content }}</article>
 
 {{ end }}
