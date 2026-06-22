@@ -21,15 +21,16 @@
 {{ end }} {{ if .Keywords }} <meta name="keywords" content="{{ delimit .Keywords
 "," }}" /> {{ end }} {{ if .Params.Author }}
 <meta name="author" content="{{ .Params.Author}}" />
-{{ end }} {{ hugo.Generator }} {{ if hugo.IsServer }} {{ $style := resources.Get
-"css/styles.css" | postCSS (dict "config" "./assets/css/dev/postcss.config.js")
-}}
-<link rel="stylesheet" href="{{ $style.Permalink }}" />
-{{ else }} {{ $style := resources.Get "css/styles.css" | postCSS (dict "config"
-"./assets/css/postcss.config.js") | minify | fingerprint }}
-<link
-  rel="stylesheet"
-  href="{{ $style.Permalink }}"
-  integrity="{{ $style.Data.Integrity }}"
-/>
+{{ end }} {{ hugo.Generator }}
+{{ with resources.Get "css/styles.css" }}
+  {{ $opts := dict "minify" (not hugo.IsServer) }}
+  {{ with . | css.TailwindCSS $opts }}
+    {{ if hugo.IsServer }}
+      <link rel="stylesheet" href="{{ .RelPermalink }}" />
+    {{ else }}
+      {{ with . | fingerprint }}
+        <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" />
+      {{ end }}
+    {{ end }}
+  {{ end }}
 {{ end }}

@@ -10,10 +10,11 @@
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^2.1.0",
+    "@tailwindcss/cli": "^4.3.1",
     "@tailwindcss/typography": "^0.5.20",
-    "autoprefixer": "^9.7.4",
-    "postcss": "^7.0.36",
-    "postcss-cli": "^7.1.0",
+    "autoprefixer": "^10.5.0",
+    "postcss": "^8.5.15",
+    "postcss-cli": "^10.1.0",
     "postcss-import": "^12.0.1",
     "tailwindcss": "^4.3.0"
   },
@@ -24,6 +25,7 @@
     "not dead"
   ],
   "dependencies": {
+    "@tailwindcss/postcss": "^4.3.1",
     "typeface-lato": "0.0.75"
   }
 }
