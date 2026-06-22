@@ -644,9 +644,9 @@ Your browser does not support the video tag.
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;{% endraw %}
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The iframe tag is added to avoid the page refresh when the form is submitted. Once we add javascript in the next step, the comments component will function as follows.&lt;/p&gt;
-&lt;p&gt;If the user is logged in, then the comment form will be visible along with the user profile and an option to sign out
+&lt;p&gt;If the user is logged in, then the comment form will be visible along with the user profile and an option to sign out&lt;br&gt;
 &lt;img src="/empty_loggedin.png" alt="&amp;ldquo;Comments section with user logged in&amp;rdquo;"&gt;&lt;em&gt;Comments section with user logged in&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;If the user is not logged in, then the form is hidden away and the user has the option to sign in with google to login.
+&lt;p&gt;If the user is not logged in, then the form is hidden away and the user has the option to sign in with google to login.&lt;br&gt;
 &lt;img src="/empty_loggedout.png" alt="&amp;ldquo;Comments section with user logged out&amp;rdquo;"&gt;&lt;em&gt;Comments section with user logged out&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;We are almost at the end. The final ingredient is the javascript logic. The &lt;em&gt;loadComments()&lt;/em&gt; makes a request to the sheet document with that particular page url and gets the comments that belong to it. The &lt;em&gt;displayComments()&lt;/em&gt; parses the csv that is returned and displays it by creating new elements for each comment. The checkForm() is used to verify if the user is signed in before submitting the comment. Once a new comment is submitted, the comments are reloaded and only new one are rendered.&lt;/p&gt;
 &lt;h5 id="commentsnjk-1"&gt;comments.njk&lt;/h5&gt;
