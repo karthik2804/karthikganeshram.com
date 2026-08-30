@@ -31,5 +31,15 @@ hardWraps = true
 mediaType = "application/json"
 isPlainText = true
 
+[security.exec]
+allow = [
+    '^(dart-)?sass$',
+    '^go$',
+    '^git$',
+    '^node$',
+    '^postcss$',
+    '^tailwindcss$',
+]
+
 [security.node.permissions]
 disable = true
