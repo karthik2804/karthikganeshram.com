@@ -2,7 +2,7 @@
 title: "Belgium (Ghent, Bruges, Antwerp & Coastal Loop)"
 date: 2025-05-01
 
-activity: "cycling"
+activities: ["holiday", "cycling"]
 country: "Belgium"
 
 description: "Coastal cycle loop from Ghent to Knokke and Bruges, plus exploring Ghent, Antwerp, and Brussels with my parents."

@@ -2,7 +2,7 @@
 title: "Oslo Company Offsite"
 date: 2025-05-20
 
-activity: "offsite"
+activities: ["offsite"]
 country: "Norway"
 
 description: "Company offsite in Oslo, Norway."

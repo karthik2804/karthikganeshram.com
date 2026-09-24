@@ -26,8 +26,8 @@ Open the generated markdown file and fill in your details:
 title: "Rotterdam → Amsterdam Coastal Ride"
 date: 2026-08-06
 
-# Category type: cycling | hiking | travel | flight | offsite
-activity: "cycling"
+# Add one or more: workcation | offsite | holiday | cycling | hiking | conference
+activities: ["holiday", "cycling"]
 country: "Netherlands"
 description: "Coastal dune ride along the North Sea."
 
@@ -59,10 +59,12 @@ draft: false
 Write your trip story or reflections here...
 ```
 
+Use one or more values in `activities`. The current set is `workcation`, `offsite`, `holiday`, `cycling`, `hiking`, and `conference`; new values automatically become filter buttons.
+
 ## 3. How the Map Works
 
-- The overview groups entries by country and links to every journey in that country.
-- A journey page shows all `locations` and draws `route` when one is present.
+- The lightweight SVG overview groups entries by country and links to every journey in that country.
+- A journey page draws a tile-free SVG route from `locations` and `route`.
 - Entries without usable coordinates remain in the journal list and are omitted from the map.
 
 ## 4. Optional Story Components

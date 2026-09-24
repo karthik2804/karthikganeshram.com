@@ -2,7 +2,7 @@
 title: "Copenhagen Workcation"
 date: 2025-06-15
 
-activity: "travel"
+activities: ["workcation"]
 country: "Denmark"
 
 description: "A few days of workcation in Copenhagen in June 2025."

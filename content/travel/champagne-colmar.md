@@ -2,7 +2,7 @@
 title: "Champagne & Alsace Cycling"
 date: 2026-05-15
 
-activity: "cycling"
+activities: ["holiday", "cycling"]
 country: "France"
 
 description: "Cycling paths from Châlons-en-Champagne to Aÿ-Champagne, plus Colmar to Strasbourg, Colmar to Freiburg, and into the Vosges."

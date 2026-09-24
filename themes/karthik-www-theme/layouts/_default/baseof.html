@@ -14,12 +14,6 @@
     </main>
     {{- partial "footer.html" . -}}
     {{ if eq .Section "travel" }}
-      <script
-        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-        crossorigin="anonymous"
-        defer
-      ></script>
       {{ with resources.Get "js/travel.js" | minify | fingerprint }}
         <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" defer></script>
       {{ end }}

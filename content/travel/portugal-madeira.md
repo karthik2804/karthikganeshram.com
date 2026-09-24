@@ -2,7 +2,7 @@
 title: "Lisbon, Porto & Madeira"
 date: 2024-11-10
 
-activity: "travel"
+activities: ["holiday", "hiking"]
 country: "Portugal"
 
 description: "Trip through Lisbon, Porto, and levada trail hikes in Madeira."

@@ -2,8 +2,9 @@
 title: "{{ replace .Name "-" " " | title }}"
 date: {{ .Date }}
 
-# Activity Type: cycling | hiking | travel | flight | offsite
-activity: "cycling"
+# Add one or more: workcation | offsite | holiday | cycling | hiking | conference
+activities:
+  - "cycling"
 country: "France"
 
 description: "Short 1-2 sentence overview of this journey."

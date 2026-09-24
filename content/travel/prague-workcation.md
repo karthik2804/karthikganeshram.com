@@ -2,7 +2,7 @@
 title: "Prague Workcation"
 date: 2026-07-10
 
-activity: "travel"
+activities: ["workcation"]
 country: "Czech Republic"
 
 description: "A few days of workcation in Prague in July 2026."

@@ -2,7 +2,7 @@
 title: "Davis to San Francisco"
 date: 2022-03-21
 
-activity: "cycling"
+activities: ["cycling"]
 country: "USA"
 
 description: "150 km endurance ride from Davis across Dixon, Vacaville, Fairfield, Vallejo towards San Francisco."

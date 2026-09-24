@@ -2,7 +2,7 @@
 title: "Lille (Tour de France)"
 date: 2025-07-06
 
-activity: "travel"
+activities: ["holiday"]
 country: "France"
 
 description: "Day trip to Lille to watch the Tour de France."

@@ -2,7 +2,7 @@
 title: "Barcelona & Wasm I/O"
 date: 2025-03-20
 
-activity: "flight"
+activities: ["conference"]
 country: "Spain"
 
 description: "Speaking at Wasm I/O conference in Barcelona and exploring Catalan architecture."

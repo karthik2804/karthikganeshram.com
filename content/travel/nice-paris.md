@@ -2,7 +2,7 @@
 title: "Nice & Paris Vacation"
 date: 2025-05-10
 
-activity: "travel"
+activities: ["holiday"]
 country: "France"
 
 description: "Vacation in Nice on the French Riviera and Paris with a coworker."

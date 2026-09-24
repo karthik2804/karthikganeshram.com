@@ -3,7 +3,7 @@
     <a class="travel-back" href="{{ "/travel/" | relURL }}">← All journeys</a>
     <header class="travel-entry-header">
       <div class="travel-entry-meta">
-        <span class="trip-type trip-type--{{ .Params.activity | default "travel" }}">{{ .Params.activity | default "travel" }}</span>
+        {{ range .Params.activities }}<span class="trip-type trip-type--{{ . | urlize }}">{{ . | humanize }}</span>{{ end }}
         <span>{{ .Params.country }}</span>
         <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
       </div>
@@ -12,8 +12,22 @@
     </header>
     {{ if or (ne .Params.latitude nil) .Params.locations }}
       <figure class="travel-entry-map-wrap">
-        <div id="single-trip-map" class="travel-map travel-map--single" aria-label="Map of {{ .Title }}"></div>
-        {{ with .Params.location }}<figcaption>{{ . }}</figcaption>{{ end }}
+        <div class="route-map" id="single-trip-map">
+          <svg viewBox="0 0 900 420" role="img" aria-labelledby="route-map-title route-map-desc">
+            <title id="route-map-title">Route for {{ .Title }}</title>
+            <desc id="route-map-desc">A diagram showing the stops and route in this journey.</desc>
+            <defs>
+              <pattern id="route-grid" width="45" height="42" patternUnits="userSpaceOnUse">
+                <path d="M45 0H0V42" fill="none" stroke="currentColor" stroke-width=".6" />
+              </pattern>
+            </defs>
+            <rect width="900" height="420" class="route-map-bg" />
+            <rect width="900" height="420" fill="url(#route-grid)" class="route-map-grid" />
+            <g id="route-layer"></g>
+          </svg>
+          <div id="route-detail" class="route-detail" aria-live="polite"></div>
+        </div>
+        {{ with .Params.location }}<figcaption>{{ . }} · Schematic route, not turn-by-turn navigation.</figcaption>{{ end }}
       </figure>
     {{ end }}
     <div class="travel-entry-content">{{ .Content }}</div>
