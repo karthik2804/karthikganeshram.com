@@ -1,6 +1,6 @@
 <header class="max-w-screen-md mx-auto text-center">
   {{ if or (eq .RelPermalink "/") (eq .RelPermalink "/about/") (eq .RelPermalink
-  "/blog/")}}
+  "/blog/") (eq .RelPermalink "/travel/")}}
   <h1>
     <a class="text-4xl sm:text-6xl hover:text-gray-600" href="/"
       >Karthik Ganeshram</a
@@ -11,13 +11,13 @@
     >Karthik Ganeshram</a
   >
   {{ end }}
-  <nav>
+  <nav aria-label="Primary navigation">
     <div class="inline-block border-t border-b border-gray-800 p-2 text-lg">
       <a
         class="hover:underline"
         href="/"
         title="Home - {{ .Site.Title }}"
-        type="text/html"
+        {{ if eq .RelPermalink "/" }}aria-current="page"{{ end }}
         >HOME</a
       >
       <span class="mr-2 ml-2">&middot;</span>
@@ -25,7 +25,7 @@
         class="hover:underline"
         href="/about/"
         title="About - {{ .Site.Title }}"
-        type="text/html"
+        {{ if eq .RelPermalink "/about/" }}aria-current="page"{{ end }}
         >ABOUT</a
       >
 
@@ -33,19 +33,24 @@
       <br class="sm:hidden" />
       <a
         class="hover:underline"
-        class="inline-block"
         href="/blog/"
         title="Blog - {{ .Site.Title }}"
-        type="text/html"
+        {{ if eq .Section "blog" }}aria-current="page"{{ end }}
         >BLOG</a
       >
       <span class="mr-2 ml-2 inline-block">&middot;</span>
       <a
         class="hover:underline"
-        class="inline-block"
+        href="/travel/"
+        title="Travel - {{ .Site.Title }}"
+        {{ if eq .Section "travel" }}aria-current="page"{{ end }}
+        >TRAVEL</a
+      >
+      <span class="mr-2 ml-2 inline-block">&middot;</span>
+      <a
+        class="hover:underline"
         href="/Karthik_Ganeshram.pdf"
         title="Resume - {{ .Site.Title }}"
-        type="text/html"
         >RESUME</a
       >
     </div>

@@ -1,0 +1,30 @@
+{{ define "main" }}
+  <article class="travel-entry">
+    <a class="travel-back" href="{{ "/travel/" | relURL }}">← All journeys</a>
+    <header class="travel-entry-header">
+      <div class="travel-entry-meta">
+        <span class="trip-type trip-type--{{ .Params.activity | default "travel" }}">{{ .Params.activity | default "travel" }}</span>
+        <span>{{ .Params.country }}</span>
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
+      </div>
+      <h1>{{ .Title }}</h1>
+      {{ with .Params.description }}<p class="travel-entry-deck">{{ . }}</p>{{ end }}
+    </header>
+    {{ if or (ne .Params.latitude nil) .Params.locations }}
+      <figure class="travel-entry-map-wrap">
+        <div id="single-trip-map" class="travel-map travel-map--single" aria-label="Map of {{ .Title }}"></div>
+        {{ with .Params.location }}<figcaption>{{ . }}</figcaption>{{ end }}
+      </figure>
+    {{ end }}
+    <div class="travel-entry-content">{{ .Content }}</div>
+  </article>
+  <script id="single-trip-data" type="application/json">{
+    "title": {{ .Title | jsonify | safeJS }},
+    "latitude": {{ if ne .Params.latitude nil }}{{ .Params.latitude }}{{ else }}null{{ end }},
+    "longitude": {{ if ne .Params.longitude nil }}{{ .Params.longitude }}{{ else }}null{{ end }},
+    "locations": [{{ range $index, $loc := .Params.locations }}{{ if $index }},{{ end }}{
+      "name": {{ $loc.name | jsonify | safeJS }}, "latitude": {{ $loc.latitude }}, "longitude": {{ $loc.longitude }}
+    }{{ end }}],
+    "route": {{ if .Params.route }}{{ .Params.route | jsonify | safeJS }}{{ else }}null{{ end }}
+  }</script>
+{{ end }}

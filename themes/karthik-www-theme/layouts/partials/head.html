@@ -13,7 +13,7 @@
 {{ else if .Params.redirectUrl }}
 <link rel="canonical" href="{{ .Params.redirectUrl }}" />
 {{ else }}
-<link rel="canonical" href="https://karthikganeshram.com{{ .Permalink }}" />
+<link rel="canonical" href="{{ .Permalink }}" />
 {{ end }} {{ if .Params.redirectUrl }}
 <meta http-equiv="refresh" content="0; url={{ .Params.redirectUrl }}" />
 {{ end }} {{ if .Description }}
@@ -32,5 +32,16 @@
         <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" />
       {{ end }}
     {{ end }}
+  {{ end }}
+{{ end }}
+{{ if eq .Section "travel" }}
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIINfQ3ynhY2qnvZjMZ7lfWPg3HfE1Y0Z14="
+    crossorigin="anonymous"
+  />
+  {{ with resources.Get "css/travel.css" | minify | fingerprint }}
+    <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" />
   {{ end }}
 {{ end }}

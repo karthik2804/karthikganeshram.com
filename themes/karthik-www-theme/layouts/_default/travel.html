@@ -1,0 +1,62 @@
+{{ define "main" }}
+  {{ $travelPages := (where site.RegularPages "Section" "travel").ByDate.Reverse }}
+  {{ $paginator := .Paginate $travelPages 6 }}
+  {{ $countries := slice }}
+  {{ range $travelPages }}{{ with .Params.country }}{{ $countries = $countries | append . }}{{ end }}{{ end }}
+
+  <section class="travel-hero" aria-labelledby="travel-title">
+    <p class="travel-eyebrow">Field notes from the road</p>
+    <h1 id="travel-title">Travel log</h1>
+    <p class="travel-intro">Bike rides, workcations, mountain paths, and the places in between.</p>
+    <dl class="travel-totals" aria-label="Travel log summary">
+      <div><dt>Journeys</dt><dd>{{ len $travelPages }}</dd></div>
+      <div><dt>Countries</dt><dd>{{ len ($countries | uniq) }}</dd></div>
+      <div><dt>Since</dt><dd>{{ with $travelPages.Reverse }}{{ (index . 0).Date.Format "2006" }}{{ end }}</dd></div>
+    </dl>
+  </section>
+
+  <section class="travel-map-section" aria-labelledby="map-title">
+    <div class="travel-section-heading">
+      <div><p class="travel-kicker">Explore</p><h2 id="map-title">The map so far</h2></div>
+      <p>Select a marker to see the journeys connected to that place.</p>
+    </div>
+    <div id="travel-map" class="travel-map" aria-label="Interactive map of travel destinations"></div>
+    <noscript><p class="travel-map-fallback">The map needs JavaScript, but every journey is listed below.</p></noscript>
+  </section>
+
+  <section class="travel-journal" aria-labelledby="journal-title">
+    <div class="travel-section-heading">
+      <div><p class="travel-kicker">Journal</p><h2 id="journal-title">All journeys</h2></div>
+      <p>Ordered from the latest detour backwards.</p>
+    </div>
+    <div class="travel-grid">
+      {{ range $paginator.Pages }}
+        <article class="trip-card">
+          <div class="trip-card-meta">
+            <span class="trip-type trip-type--{{ .Params.activity | default "travel" }}">{{ .Params.activity | default "travel" }}</span>
+            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2006" }}</time>
+          </div>
+          <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+          <p class="trip-location">{{ with .Params.location }}{{ . }}{{ else }}{{ .Params.country }}{{ end }}</p>
+          {{ with .Params.description }}<p class="trip-description">{{ . }}</p>{{ end }}
+          <a class="trip-card-link" href="{{ .RelPermalink }}" aria-label="Read {{ .Title }}">Read the note <span aria-hidden="true">↗</span></a>
+        </article>
+      {{ end }}
+    </div>
+    {{ if gt $paginator.TotalPages 1 }}
+      <nav class="travel-pagination" aria-label="Travel log pages">
+        {{ if $paginator.HasPrev }}<a href="{{ $paginator.Prev.URL }}">← Newer</a>{{ else }}<span></span>{{ end }}
+        <span>Page {{ $paginator.PageNumber }} of {{ $paginator.TotalPages }}</span>
+        {{ if $paginator.HasNext }}<a href="{{ $paginator.Next.URL }}">Older →</a>{{ else }}<span></span>{{ end }}
+      </nav>
+    {{ end }}
+  </section>
+
+  <script id="travel-data" type="application/json">[{{ range $index, $trip := $travelPages }}{{ if $index }},{{ end }}{
+    "title": {{ $trip.Title | jsonify | safeJS }}, "activity": {{ ($trip.Params.activity | default "travel") | jsonify | safeJS }},
+    "country": {{ ($trip.Params.country | default "") | jsonify | safeJS }}, "date": {{ $trip.Date.Format "January 2006" | jsonify | safeJS }},
+    "url": {{ $trip.RelPermalink | jsonify | safeJS }},
+    "latitude": {{ if ne $trip.Params.latitude nil }}{{ $trip.Params.latitude }}{{ else }}null{{ end }},
+    "longitude": {{ if ne $trip.Params.longitude nil }}{{ $trip.Params.longitude }}{{ else }}null{{ end }}
+  }{{ end }}]</script>
+{{ end }}
