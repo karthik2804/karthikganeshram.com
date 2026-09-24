@@ -106,11 +106,15 @@ main a:hover {
 .journal-content blockquote { margin-inline: 0; border-left: 3px solid var(--accent); background: var(--paper-deep); }
 .journal-content img { border-radius: 0; }
 
-.about-page { max-width: 58rem; margin-inline: auto; }
-.about-content { display: flow-root; max-width: 50rem; color: var(--ink); font-size: 1.08rem; }
+.about-page { max-width: 56rem; margin-inline: auto; }
+.about-page .page-hero { max-width: 44rem; padding-bottom: 3.25rem; }
+.about-page .page-hero h1 { max-width: 11ch; font-size: clamp(2.75rem, 5vw, 4.25rem); line-height: .98; text-wrap: balance; }
+.about-content { display: flow-root; max-width: 48rem; color: var(--ink); font-size: 1.04rem; line-height: 1.78; text-wrap: pretty; }
 .about-content > p:first-of-type img,
-.about-content > img:first-child { float: left; width: min(44%, 18rem); margin: 0 2.5rem 1.5rem 0; filter: saturate(.82); }
-.about-content p { margin: 0 0 1.4rem; }
+.about-content > img:first-child { float: left; width: min(40%, 17rem); margin: .35rem 3rem 1.5rem 0; filter: saturate(.82) contrast(.98); }
+.about-content p { margin: 0 0 1.25rem; font-size: inherit; line-height: inherit; }
+.about-content > p:nth-child(2) { color: #354139; font-size: 1.18rem; line-height: 1.7; }
+.about-content a { color: var(--accent); text-underline-offset: .16em; }
 
 .error-page { max-width: 68rem; margin: 0 auto; padding: 16vh 1.25rem; }
 .error-page h1 { margin: .5rem 0 1rem; font-size: clamp(3rem, 9vw, 7rem); font-weight: 500; letter-spacing: -.065em; line-height: .9; }
@@ -128,7 +132,8 @@ main a:hover {
   .post-list-item { grid-template-columns: 1fr; gap: .35rem; }
   .post-list-item time { padding-left: 1rem; }
   .about-content > p:first-of-type img,
-  .about-content > img:first-child { float: none; width: 100%; max-width: 20rem; margin: 0 0 2rem; }
+  .about-content > img:first-child { float: none; width: 100%; max-width: 18rem; margin: 0 0 2rem; }
+  .about-content > p:nth-child(2) { font-size: 1.1rem; }
   .site-footer { align-items: flex-start; flex-direction: column; }
   .footer-links { justify-content: flex-start; }
 }
