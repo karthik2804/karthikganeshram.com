@@ -59,7 +59,6 @@ main a:hover {
 
 /* ─── Home ───────────────────────────────────────────────────────────────── */
 .home-hero { padding-bottom: 5rem; }
-.home-hero > .section-kicker { margin-bottom: 1.5rem; }
 .home-intro { display: grid; grid-template-columns: minmax(13rem, .7fr) minmax(0, 1.5fr); align-items: center; gap: clamp(2rem, 6vw, 5rem); }
 .home-intro img { width: 100%; max-width: 20rem; margin: 0; border-radius: 0; filter: saturate(.82); }
 .home-intro p { max-width: 42rem; margin: 0; font-size: clamp(1.08rem, 1.8vw, 1.4rem); font-weight: 400; letter-spacing: -.018em; line-height: 1.58; }

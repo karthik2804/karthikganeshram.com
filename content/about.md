@@ -1,5 +1,5 @@
 ---
-title: "About me"
+title: "About"
 date: 2025-07-26T23:26:35-07:00
 draft: false
 type: "about"
@@ -7,7 +7,7 @@ type: "about"
 
 ![Portrait of Karthik](/karthik.png)
 
-Hi! I’m Karthik, a software engineer originally from the city of Chennai in India. I moved to the US for my master’s degree in computer engineering at UC Davis. I currently live in the Netherlands.
+I grew up in Chennai, India, and moved to the US for my master’s degree in computer engineering at UC Davis. I’m a software engineer and currently live in the Netherlands.
 
 When I’m not immersed in work or studying, I enjoy listening to music—especially rock, though I appreciate a wide range of styles. I also indulge in some gaming to unwind. Occasionally, I pick up my camera and try my hand at photography—you can see some of my snapshots on my [Instagram](https://www.instagram.com/karthik_ganeshram/).
 

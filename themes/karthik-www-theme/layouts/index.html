@@ -1,11 +1,10 @@
 {{ define "main" }}
   <section class="home-hero">
-    <p class="section-kicker">Hello, I’m Karthik</p>
     <div class="home-intro">{{ .Content }}</div>
   </section>
   <section class="home-writing" aria-labelledby="latest-posts">
     <div class="section-heading">
-      <div><p class="section-kicker">From the notebook</p><h2 id="latest-posts">Latest writing</h2></div>
+      <div><h2 id="latest-posts">Latest writing</h2></div>
       <a href="/blog/">View all <span aria-hidden="true">↗</span></a>
     </div>
     {{ partial "recent_blog_cards.html" . }}

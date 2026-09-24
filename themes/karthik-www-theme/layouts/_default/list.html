@@ -1,6 +1,5 @@
 {{ define "main" }}
   <header class="page-hero">
-    <p class="section-kicker">Notes and essays</p>
     <h1>{{ .Title }}</h1>
     <p>Reflections, personal updates, and occasional technical deep dives.</p>
   </header>
@@ -13,7 +12,7 @@
   {{ range $groups }}
     {{ if .pages }}
       <section class="post-list-section">
-        <div class="section-heading"><div><p class="section-kicker">Browse</p><h2>{{ .title }}</h2></div></div>
+        <div class="section-heading"><div><h2>{{ .title }}</h2></div></div>
         <div class="post-list">{{ range .pages }}{{ partial "list_item" . }}{{ end }}</div>
       </section>
     {{ end }}
