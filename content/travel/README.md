@@ -66,6 +66,11 @@ Use one or more values in `activities`. The current set is `workcation`, `offsit
 - The SVG overview groups entries by country and links to every journey in that country.
 - A journey page draws its route from `locations` and `route`.
 - Entries without usable coordinates remain in the journal list and are omitted from the map.
+- The coastline is generated from Natural Earth 1:110m land data. To refresh it, download `ne_110m_land.geojson` and run:
+
+  ```bash
+  node scripts/generate-world-map.mjs ne_110m_land.geojson themes/karthik-www-theme/layouts/partials/world-map-land.html
+  ```
 
 ## 4. Optional Story Components
 
