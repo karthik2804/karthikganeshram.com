@@ -14,6 +14,17 @@
     catch (error) { console.error(`Could not parse ${id}`, error); return null; }
   };
   const activityLabel = (activities = []) => activities.map((item) => item.replace(/-/g, " ")).join(" · ");
+  const projectWorld = (latitude, longitude) => {
+    const lambda = longitude * Math.PI / 180;
+    const phi = latitude * Math.PI / 180;
+    const theta = Math.asin((Math.sqrt(3) / 2) * Math.sin(phi));
+    const theta2 = theta * theta;
+    const theta6 = theta2 * theta2 * theta2;
+    const denominator = 3 * (9 * 0.003796 * theta6 * theta2 + 7 * 0.000893 * theta6 + 3 * -0.081106 * theta2 + 1.340264);
+    const x = (2 * Math.sqrt(3) * lambda * Math.cos(theta)) / denominator;
+    const y = theta * (1.340264 + -0.081106 * theta2 + 0.000893 * theta6 + 0.003796 * theta6 * theta2);
+    return { x: ((x + 2.70663) / 5.41326) * 1000, y: ((1.31736 - y) / 2.63472) * 500 };
+  };
 
   const renderMapDetail = (container, country, trips) => {
     container.replaceChildren();
@@ -48,8 +59,7 @@
     const occupied = [];
     groups.forEach((countryTrips, country) => {
       const trip = countryTrips[0];
-      let x = ((trip.longitude + 180) / 360) * 1000;
-      let y = ((90 - trip.latitude) / 180) * 500;
+      let { x, y } = projectWorld(trip.latitude, trip.longitude);
       let attempts = 0;
       while (occupied.some((point) => Math.hypot(point.x - x, point.y - y) < 31) && attempts < 8) {
         const angle = attempts * 1.8;

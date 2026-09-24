@@ -43,7 +43,7 @@
 .travel-section-heading > p { max-width: 24rem; margin: 0; color: var(--travel-muted); font-size: .9rem; }
 .travel-kicker { margin-bottom: .25rem; }
 .travel-map { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 17rem; width: 100%; overflow: hidden; border: 1px solid var(--travel-line); border-radius: 1.25rem; background: #e7ece7; box-shadow: 0 18px 45px rgba(35, 43, 37, .08); }
-.world-map { display: block; width: 100%; height: auto; color: rgba(23, 33, 27, .1); }
+.world-map { display: block; width: 100%; height: auto; aspect-ratio: 2 / 1; color: rgba(23, 33, 27, .1); }
 .map-ocean { fill: #e7ece7; }
 .map-grid { color: rgba(23, 33, 27, .055); }
 .map-land { fill: #f9f7f0; stroke: #aeb8ae; stroke-width: 1.15; stroke-linejoin: miter; vector-effect: non-scaling-stroke; }

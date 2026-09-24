@@ -7,10 +7,19 @@ if (!input || !output) {
 }
 
 const data = JSON.parse(readFileSync(input, "utf8"));
-const project = ([longitude, latitude]) => [
-  Math.round(((longitude + 180) / 360) * 1000),
-  Math.round(((90 - latitude) / 180) * 500),
-];
+// Equal Earth projection keeps continental proportions natural while fitting
+// cleanly into the map's 2:1 viewBox.
+const project = ([longitude, latitude]) => {
+  const lambda = longitude * Math.PI / 180;
+  const phi = latitude * Math.PI / 180;
+  const theta = Math.asin((Math.sqrt(3) / 2) * Math.sin(phi));
+  const theta2 = theta * theta;
+  const theta6 = theta2 * theta2 * theta2;
+  const denominator = 3 * (9 * 0.003796 * theta6 * theta2 + 7 * 0.000893 * theta6 + 3 * -0.081106 * theta2 + 1.340264);
+  const x = (2 * Math.sqrt(3) * lambda * Math.cos(theta)) / denominator;
+  const y = theta * (1.340264 + -0.081106 * theta2 + 0.000893 * theta6 + 0.003796 * theta6 * theta2);
+  return [Math.round(((x + 2.70663) / 5.41326) * 1000), Math.round(((1.31736 - y) / 2.63472) * 500)];
+};
 const polygonPath = (rings) => rings.map((ring) => {
   const points = ring.map(project).filter((point, index, all) =>
     index === 0 || point[0] !== all[index - 1][0] || point[1] !== all[index - 1][1]

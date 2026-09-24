@@ -7,9 +7,9 @@ country: "Portugal"
 
 description: "Trip through Lisbon, Porto, and levada trail hikes in Madeira."
 
-# Main map pin (One pin per trip)
-latitude: 32.6669
-longitude: -16.9241
+# Main map pin (representative location for the overview)
+latitude: 38.7223
+longitude: -9.1393
 location: "Madeira, Portugal"
 
 locations:
