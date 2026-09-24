@@ -63,8 +63,8 @@ Use one or more values in `activities`. The current set is `workcation`, `offsit
 
 ## 3. How the Map Works
 
-- The lightweight SVG overview groups entries by country and links to every journey in that country.
-- A journey page draws a tile-free SVG route from `locations` and `route`.
+- The SVG overview groups entries by country and links to every journey in that country.
+- A journey page draws its route from `locations` and `route`.
 - Entries without usable coordinates remain in the journal list and are omitted from the map.
 
 ## 4. Optional Story Components

@@ -1,17 +1,13 @@
 {{ define "main" }}
-<div class="text-lg text-center px-4 lg:px-0">{{ .Content }}</div>
-
-<section class="mt-12 px-4 lg:px-0">
-  <h2 class="text-2xl font-bold mb-6">Latest Posts</h2>
-  {{ partial "recent_blog_cards.html" . }}
-</section>
-
-<div class="mt-6 mb-6 px-4 lg:px-0 text-right">
-  <a
-    href="/blog"
-    class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold"
-  >
-    View all posts
-  </a>
-</div>
+  <section class="home-hero">
+    <p class="section-kicker">Hello, I’m Karthik</p>
+    <div class="home-intro">{{ .Content }}</div>
+  </section>
+  <section class="home-writing" aria-labelledby="latest-posts">
+    <div class="section-heading">
+      <div><p class="section-kicker">From the notebook</p><h2 id="latest-posts">Latest writing</h2></div>
+      <a href="/blog/">View all <span aria-hidden="true">↗</span></a>
+    </div>
+    {{ partial "recent_blog_cards.html" . }}
+  </section>
 {{ end }}

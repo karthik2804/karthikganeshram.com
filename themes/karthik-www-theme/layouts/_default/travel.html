@@ -23,10 +23,9 @@
   <section class="travel-map-section" aria-labelledby="map-title">
     <div class="travel-section-heading">
       <div><p class="travel-kicker">Explore</p><h2 id="map-title">The map so far</h2></div>
-      <p>A fast, tile-free view of the places behind the notes. Select a marker for its journeys.</p>
     </div>
     <div class="travel-map" id="travel-map">
-      <svg class="world-map" viewBox="0 0 1000 500" role="img" aria-labelledby="world-map-title world-map-desc">
+      <svg class="world-map" viewBox="0 0 1000 500" role="img" aria-labelledby="world-map-title world-map-desc" shape-rendering="geometricPrecision">
         <title id="world-map-title">Map of travel destinations</title>
         <desc id="world-map-desc">An interactive world map showing destinations represented in the travel log.</desc>
         <defs>
@@ -37,12 +36,13 @@
         <rect width="1000" height="500" class="map-ocean" />
         <rect width="1000" height="500" fill="url(#map-grid)" class="map-grid" />
         <g class="map-land" aria-hidden="true">
-          <path d="M55 83l45-35 98-19 92 15 57 42-31 28-47 11-14 42-46 25-38 64-53-16-25-57-39-30z" />
-          <path d="M247 266l42 19 27 51-9 92-35 55-24-56-19-69z" />
-          <path d="M444 96l39-27 66 8 35 31 67-19 100 14 96 55-20 52-62 23-47-10-26 42-59-8-26-44-49-3-23-40-56-13-40-32z" />
-          <path d="M500 222l70-7 50 44-8 76-48 113-47-35-27-94-30-43z" />
-          <path d="M793 342l55-30 69 24 27 53-38 47-79-12-48-40z" />
-          <path d="M881 455l25-7 18 13-31 13z" />
+          <path d="M40 104L67 67l49-15 27-24 82 6 25 16 64 7 33 30-14 26-44 9-17 24-31 7-13 36-35 12-23 39-31 3-25-31-42-12-6-29-29-21z" />
+          <path d="M223 231l25 7 15 22 29 13 24 44-4 58-21 49-20 48-19-18-10-48-18-43 6-42-17-34z" />
+          <path d="M444 122l25-24 37-5 18 16 28-14 52 6 34-14 62 8 31 20 53 4 38 28 43 15 52 51-18 29-49-2-29 18-38-8-22 20-38-9-17-27-38 5-28-29-46 2-28-24-41 6-23-22-43 5-19-19z" />
+          <path d="M477 216l38-15 48 10 38 38 7 50-22 59-16 72-29 26-22-38-9-61-29-55-27-35z" />
+          <path d="M785 344l30-20 33 7 22-12 42 15 29 33-11 39-34 26-48-2-31-19-43-17z" />
+          <path d="M479 77l9-27 31-17 30 7 5 26-24 21z" />
+          <path d="M427 145l9-19 11 7-3 23zM872 219l9-18 7 28-8 23zM621 357l11-8 8 34-15 30zM881 454l27-7 18 13-31 14z" />
         </g>
         <g id="travel-marker-layer"></g>
       </svg>

@@ -13,7 +13,7 @@
     {{ if or (ne .Params.latitude nil) .Params.locations }}
       <figure class="travel-entry-map-wrap">
         <div class="route-map" id="single-trip-map">
-          <svg viewBox="0 0 900 420" role="img" aria-labelledby="route-map-title route-map-desc">
+          <svg viewBox="0 0 900 420" role="img" aria-labelledby="route-map-title route-map-desc" shape-rendering="geometricPrecision">
             <title id="route-map-title">Route for {{ .Title }}</title>
             <desc id="route-map-desc">A diagram showing the stops and route in this journey.</desc>
             <defs>
@@ -27,7 +27,7 @@
           </svg>
           <div id="route-detail" class="route-detail" aria-live="polite"></div>
         </div>
-        {{ with .Params.location }}<figcaption>{{ . }} · Schematic route, not turn-by-turn navigation.</figcaption>{{ end }}
+        {{ with .Params.location }}<figcaption>{{ . }}</figcaption>{{ end }}
       </figure>
     {{ end }}
     <div class="travel-entry-content">{{ .Content }}</div>
