@@ -1,11 +1,22 @@
 <!DOCTYPE html>
 <html lang="{{ .Site.Language.Locale }}">
-  {{- partial "head.html" . -}}
-  <body class="font-inter text-gray-800 leading-relaxed">
+  <head>
+    {{- partial "head.html" . -}}
+  </head>
+  <body class="site-body font-inter">
+    <a class="skip-link" href="#main-content">Skip to content</a>
     {{- partial "header.html" . -}}
-    <main class="max-w-screen-md mx-auto pt-10 pb-4 px-4 lg:px-0">
+    <main
+      id="main-content"
+      class="site-main {{ if eq .Section "travel" }}travel-shell{{ end }}"
+    >
       {{- block "main" . }}{{- end }}
     </main>
     {{- partial "footer.html" . -}}
+    {{ if eq .Section "travel" }}
+      {{ with resources.Get "js/travel.js" | minify | fingerprint }}
+        <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" defer></script>
+      {{ end }}
+    {{ end }}
   </body>
 </html>

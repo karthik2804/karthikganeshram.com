@@ -1,16 +1,20 @@
 {{ define "main" }}
-
-<div class="text-4xl">Latest</div>
-{{ range first 3 .Pages }} {{ partial "list_item" . }} {{ end }}
-
-<div class="mt-10 text-4xl">Reflection</div>
-{{ range .Pages }} {{ if in .Params.categories "reflection" }} {{ partial
-"list_item" . }} {{ end }} {{ end }}
-
-<div class="mt-10 text-4xl">Personal</div>
-{{ range .Pages }} {{ if in .Params.categories "personal" }} {{ partial
-"list_item" . }} {{ end }} {{ end }}
-
-<div class="mt-10 text-4xl">Tutorials</div>
-{{ range .Pages }} {{ if in .Params.categories "tutorials" }} {{ partial
-"list_item" . }} {{ end }} {{ end }} {{ end }}
+  <header class="page-hero">
+    <h1>{{ .Title }}</h1>
+    <p>Reflections, personal updates, and occasional technical deep dives.</p>
+  </header>
+  {{ $groups := slice
+    (dict "title" "Latest" "pages" (first 3 .Pages))
+    (dict "title" "Reflections" "pages" (where .Pages "Params.categories" "intersect" (slice "reflection")))
+    (dict "title" "Personal" "pages" (where .Pages "Params.categories" "intersect" (slice "personal")))
+    (dict "title" "Tutorials" "pages" (where .Pages "Params.categories" "intersect" (slice "tutorials")))
+  }}
+  {{ range $groups }}
+    {{ if .pages }}
+      <section class="post-list-section">
+        <div class="section-heading"><div><h2>{{ .title }}</h2></div></div>
+        <div class="post-list">{{ range .pages }}{{ partial "list_item" . }}{{ end }}</div>
+      </section>
+    {{ end }}
+  {{ end }}
+{{ end }}

@@ -1,0 +1,8 @@
+{{ $images := split (.Get "images") "," }}
+<div class="travel-gallery-grid">
+    {{ range $images }}
+    <div class="travel-gallery-item">
+        <img src="{{ trim . " " | safeURL }}" alt="{{ $.Get "alt" | default "Travel photo" }}" loading="lazy" decoding="async" />
+    </div>
+    {{ end }}
+</div>

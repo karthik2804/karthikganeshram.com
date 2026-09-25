@@ -1,45 +1,20 @@
-baseURL = "/"
-locale = "en-us"
+baseURL = "https://karthikganeshram.com/"
+locale = "en-US"
 title = "Karthik Ganeshram"
 theme = "karthik-www-theme"
-googleAnalytics = "UA-129268689-2"
 enableRobotsTXT = true
+
 [author]
 name = "Karthik Ganeshram"
 email = "raams.karthik@gmail.com"
+
 [permalinks]
 blog = "/blog/:title/"
-[markup]
-[markup.highlight]
-codeFences = true
-guessSyntax = false
-hl_Lines = ""
-lineNoStart = 1
-lineNos = false
-lineNumbersInTable = true
-noClasses = true
-style = "manni"
-tabWidth = 4
-# Add this to make shortcodes render html correctly
-defaultMarkdownHandler = "goldmark"
-[markup.goldmark]
+
 [markup.goldmark.renderer]
+# Older tutorial posts contain working HTML, script, and video examples.
 unsafe = true
 hardWraps = true
 
-[outputFormats.JSON]
-mediaType = "application/json"
-isPlainText = true
-
-[security.exec]
-allow = [
-    '^(dart-)?sass$',
-    '^go$',
-    '^git$',
-    '^node$',
-    '^postcss$',
-    '^tailwindcss$',
-]
-
-[security.node.permissions]
-disable = true
+[markup.highlight]
+style = "manni"

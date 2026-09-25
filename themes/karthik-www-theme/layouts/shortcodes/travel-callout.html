@@ -1,0 +1,9 @@
+<div class="travel-callout-box">
+    <div class="travel-callout-header">
+        <span class="travel-callout-icon">{{ .Get "icon" | default "📍" }}</span>
+        <strong class="travel-callout-title">{{ .Get "title" | default "Note" }}</strong>
+    </div>
+    <div class="travel-callout-content">
+        {{ .Inner | markdownify }}
+    </div>
+</div>

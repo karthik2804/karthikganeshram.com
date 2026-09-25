@@ -1,0 +1,86 @@
+{{ define "main" }}
+  {{ $travelPages := (where site.RegularPages "Section" "travel").ByDate.Reverse }}
+  {{ $countries := slice }}
+  {{ $activities := slice }}
+  {{ range $travelPages }}
+    {{ with .Params.country }}{{ $countries = $countries | append . }}{{ end }}
+    {{ range .Params.activities }}{{ $activities = $activities | append . }}{{ end }}
+  {{ end }}
+
+  <section class="travel-hero" aria-labelledby="travel-title">
+    <div>
+      <p class="travel-eyebrow">Field notes from the road</p>
+      <h1 id="travel-title">Travel log</h1>
+      <p class="travel-intro">Bike rides, workcations, mountain paths, and the places in between.</p>
+    </div>
+    <dl class="travel-totals" aria-label="Travel log summary">
+      <div><dt>Journeys</dt><dd>{{ len $travelPages }}</dd></div>
+      <div><dt>Countries</dt><dd>{{ len ($countries | uniq) }}</dd></div>
+      <div><dt>Since</dt><dd>{{ with $travelPages.Reverse }}{{ (index . 0).Date.Format "2006" }}{{ end }}</dd></div>
+    </dl>
+  </section>
+
+  <section class="travel-map-section" aria-labelledby="map-title">
+    <div class="travel-section-heading">
+      <div><p class="travel-kicker">Explore</p><h2 id="map-title">The map so far</h2></div>
+    </div>
+    <div class="travel-map" id="travel-map">
+      <svg class="world-map" viewBox="0 0 1000 500" role="img" aria-labelledby="world-map-title world-map-desc" shape-rendering="geometricPrecision">
+        <title id="world-map-title">Map of travel destinations</title>
+        <desc id="world-map-desc">An interactive world map showing destinations represented in the travel log.</desc>
+        <defs>
+          <pattern id="map-grid" width="50" height="50" patternUnits="userSpaceOnUse">
+            <path d="M50 0H0V50" fill="none" stroke="currentColor" stroke-width=".6" />
+          </pattern>
+        </defs>
+        <rect width="1000" height="500" class="map-ocean" />
+        <rect width="1000" height="500" fill="url(#map-grid)" class="map-grid" />
+        <g class="map-land" aria-hidden="true">
+          {{ partial "world-map-land.html" . }}
+        </g>
+        <g id="travel-marker-layer"></g>
+      </svg>
+      <div id="map-detail" class="map-detail" aria-live="polite">
+        <p>Select a marker to explore a place.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="travel-journal" aria-labelledby="journal-title">
+    <div class="travel-section-heading">
+      <div><p class="travel-kicker">Journal</p><h2 id="journal-title">All journeys</h2></div>
+      <p><span id="trip-count">{{ len $travelPages }}</span> notes, ordered from the latest detour backwards.</p>
+    </div>
+    <div class="travel-filters" role="group" aria-label="Filter journeys">
+      <button class="travel-filter is-active" type="button" data-filter="all" aria-pressed="true">All</button>
+      {{ range ($activities | uniq | sort) }}
+        <button class="travel-filter" type="button" data-filter="{{ . | urlize }}" aria-pressed="false">{{ . | humanize }}</button>
+      {{ end }}
+    </div>
+    <div class="travel-grid">
+      {{ range $travelPages }}
+        <article class="trip-card" data-activities="{{ delimit .Params.activities " " }}">
+          <div class="trip-card-meta">
+            <div class="trip-tags">
+              {{ range .Params.activities }}<span class="trip-type trip-type--{{ . | urlize }}">{{ . | humanize }}</span>{{ end }}
+            </div>
+            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2006" }}</time>
+          </div>
+          <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+          <p class="trip-location">{{ with .Params.location }}{{ . }}{{ else }}{{ .Params.country }}{{ end }}</p>
+          {{ with .Params.description }}<p class="trip-description">{{ . }}</p>{{ end }}
+          <a class="trip-card-link" href="{{ .RelPermalink }}" aria-label="Read {{ .Title }}">Read the note <span aria-hidden="true">↗</span></a>
+        </article>
+      {{ end }}
+    </div>
+    <p class="travel-empty" id="travel-empty" hidden>No journeys match this filter yet.</p>
+  </section>
+
+  <script id="travel-data" type="application/json">[{{ range $index, $trip := $travelPages }}{{ if $index }},{{ end }}{
+    "title": {{ $trip.Title | jsonify | safeJS }}, "activities": {{ $trip.Params.activities | jsonify | safeJS }},
+    "country": {{ ($trip.Params.country | default "") | jsonify | safeJS }}, "date": {{ $trip.Date.Format "January 2006" | jsonify | safeJS }},
+    "url": {{ $trip.RelPermalink | jsonify | safeJS }},
+    "latitude": {{ if ne $trip.Params.latitude nil }}{{ $trip.Params.latitude }}{{ else }}null{{ end }},
+    "longitude": {{ if ne $trip.Params.longitude nil }}{{ $trip.Params.longitude }}{{ else }}null{{ end }}
+  }{{ end }}]</script>
+{{ end }}

@@ -2,30 +2,16 @@
   "name": "karthikganeshram.com",
   "version": "0.0.1",
   "description": "Theme for karthikganeshram.com blog",
-  "main": "index.js",
-  "repository": "",
+  "private": true,
   "author": "Karthik Ganeshram",
   "scripts": {
-    "start": "hugo server -D"
+    "start": "hugo server -D",
+    "build": "hugo --gc --minify",
+    "check": "hugo --gc --minify --panicOnWarning"
   },
   "devDependencies": {
-    "@fullhuman/postcss-purgecss": "^2.1.0",
     "@tailwindcss/cli": "^4.3.1",
     "@tailwindcss/typography": "^0.5.20",
-    "autoprefixer": "^10.5.0",
-    "postcss": "^8.5.15",
-    "postcss-cli": "^10.1.0",
-    "postcss-import": "^12.0.1",
     "tailwindcss": "^4.3.0"
-  },
-  "browserslist": [
-    "last 1 version",
-    "> 1%",
-    "maintained node versions",
-    "not dead"
-  ],
-  "dependencies": {
-    "@tailwindcss/postcss": "^4.3.1",
-    "typeface-lato": "0.0.75"
   }
 }

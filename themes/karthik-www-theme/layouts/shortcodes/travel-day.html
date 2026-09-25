@@ -1,0 +1,12 @@
+<div class="travel-day-header">
+    <div class="travel-day-badge">DAY {{ .Get "day" | default "1" }}</div>
+    <h3 class="travel-day-title">{{ .Get "title" }}</h3>
+    {{ with .Get "distance" }}
+    <span class="travel-day-distance">{{ . }}</span>
+    {{ end }}
+</div>
+{{ if .Inner }}
+<div class="travel-day-body">
+    {{ .Inner | markdownify }}
+</div>
+{{ end }}
