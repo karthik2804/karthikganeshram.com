@@ -4,7 +4,7 @@ title = "Karthik Ganeshram"
 theme = "karthik-www-theme"
 enableRobotsTXT = true
 
-[author]
+[params.author]
 name = "Karthik Ganeshram"
 email = "raams.karthik@gmail.com"
 

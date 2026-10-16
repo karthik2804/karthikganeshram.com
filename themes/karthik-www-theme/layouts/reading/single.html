@@ -1,0 +1,28 @@
+{{ define "main" }}
+  <div class="reading-page">
+    <header class="page-hero">
+      <h1>{{ .Title }}</h1>
+      <div class="reading-intro">{{ .Content }}</div>
+    </header>
+    {{ range $group := slice
+      (dict "status" "reading" "title" "Currently reading")
+      (dict "status" "want" "title" "Want to read")
+      (dict "status" "finished" "title" "Finished")
+    }}
+      <section class="reading-section" aria-labelledby="books-{{ $group.status }}">
+        <div class="section-heading"><h2 id="books-{{ $group.status }}">{{ $group.title }}</h2></div>
+        <ul class="book-list">
+          {{ range $.Params.books }}
+            {{ if eq .status $group.status }}
+              <li>
+                <span class="book-title">{{ .title }}</span>
+                <span class="book-details">{{ .author }}{{ with .year }} <span aria-hidden="true">·</span> {{ . }}{{ end }}</span>
+              </li>
+            {{ end }}
+          {{ end }}
+        </ul>
+      </section>
+    {{ end }}
+    <p class="reading-contact">Have a book recommendation? <a href="mailto:{{ site.Params.author.email }}?subject=Book%20recommendation">Email me <span aria-hidden="true">↗</span></a></p>
+  </div>
+{{ end }}

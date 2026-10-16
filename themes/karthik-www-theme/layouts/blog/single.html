@@ -1,0 +1,42 @@
+{{ define "main" }}
+  {{ $current := . }}
+  {{ $posts := (where site.RegularPages "Section" "blog").ByDate.Reverse }}
+  {{ $position := -1 }}
+  {{ range $index, $post := $posts }}
+    {{ if eq $post.RelPermalink $current.RelPermalink }}{{ $position = $index }}{{ end }}
+  {{ end }}
+  <article class="journal-entry">
+    <a class="journal-back" href="/blog/"><span aria-hidden="true">←</span> All writing</a>
+    <header class="journal-header">
+      {{ with .Params.categories }}<p class="section-kicker">{{ index . 0 | humanize }}</p>{{ end }}
+      <h1>{{ .Title }}</h1>
+      {{ with .Description }}<p class="journal-deck">{{ . }}</p>{{ end }}
+      <div class="journal-meta">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
+        <span aria-hidden="true">·</span>
+        <span>{{ .ReadingTime }} min read</span>
+      </div>
+    </header>
+    {{ with .Params.header_image }}
+      <figure class="journal-cover">
+        <img src="{{ . | relURL }}" alt="{{ $current.Params.header_image_alt | default "" }}" decoding="async" fetchpriority="high" />
+      </figure>
+    {{ end }}
+    <div class="journal-content">{{ .Content }}</div>
+    <footer class="journal-footer">
+      <div class="writing-section-heading"><h2>Keep reading</h2></div>
+      <nav class="journal-neighbors" aria-label="More writing">
+        {{ if gt $position 0 }}
+          {{ with index $posts (sub $position 1) }}
+            <a href="{{ .RelPermalink }}"><span>Newer essay</span><strong>{{ .Title }}</strong><span aria-hidden="true">↗</span></a>
+          {{ end }}
+        {{ end }}
+        {{ if lt (add $position 1) (len $posts) }}
+          {{ with index $posts (add $position 1) }}
+            <a href="{{ .RelPermalink }}"><span>Older essay</span><strong>{{ .Title }}</strong><span aria-hidden="true">↗</span></a>
+          {{ end }}
+        {{ end }}
+      </nav>
+    </footer>
+  </article>
+{{ end }}

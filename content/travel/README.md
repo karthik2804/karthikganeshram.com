@@ -4,77 +4,50 @@ build:
   list: never
 ---
 
-# Travel Log Maintenance Guide
+# Adding a travel note
 
-Adding and maintaining travel notes on your website is simple and automated.
-
-## 1. Add a New Travel Entry
-Run this command in your terminal from the project root:
+Create a draft from the project root:
 
 ```bash
 hugo new travel/my-new-trip.md
 ```
 
-This generates a pre-formatted markdown file in `content/travel/` pre-loaded with template metadata.
+Edit the new file in `content/travel/`. The fields you need are the title, date, country, one or more activities, and a short description. Write the story below the second `---`. Set `draft: false` when it is ready to publish.
 
-## 2. Edit Frontmatter Metadata
+If you know only the month or year, use the first day of that period in `date` for sorting and set `date_precision: "month"` or `date_precision: "year"`. The site then displays only the known part of the date. For example, a trip in June 2022 can use `date: 2022-06-01` and `date_precision: "month"`.
 
-Open the generated markdown file and fill in your details:
+For a trip with several places, add names in visit order:
 
 ```yaml
----
-title: "Rotterdam → Amsterdam Coastal Ride"
-date: 2026-08-06
-
-# Add one or more: workcation | offsite | holiday | cycling | hiking | conference
-activities: ["holiday", "cycling"]
-country: "Netherlands"
-description: "Coastal dune ride along the North Sea."
-
-# Main map pin for global map overview
-latitude: 52.0705
-longitude: 4.3007
-location: "The Hague, Netherlands"
-
-# Optional sub-locations & route path for cycling/tours
-locations:
-  - name: "Rotterdam"
-    latitude: 51.9244
-    longitude: 4.4777
-  - name: "The Hague"
-    latitude: 52.0705
-    longitude: 4.3007
-  - name: "Amsterdam"
-    latitude: 52.3676
-    longitude: 4.9041
-
-route:
-  - [51.9244, 4.4777]
-  - [52.0705, 4.3007]
-  - [52.3676, 4.9041]
-
-draft: false
----
-
-Write your trip story or reflections here...
+places: ["Ghent", "Knokke-Heist", "Bruges", "Ghent"]
 ```
 
-Use one or more values in `activities`. The current set is `workcation`, `offsite`, `holiday`, `cycling`, `hiking`, and `conference`; new values automatically become filter buttons.
+The page shows these as a simple sequence. A single-place note can use one name or leave `places` empty. No map coordinates are needed.
 
-## 3. How the Map Works
+An optional cover photo makes the journal card and note more visual. Put the image in `static/`, then add:
 
-- The SVG overview groups entries by country and links to every journey in that country.
-- A journey page draws its route from `locations` and `route`.
-- Entries without usable coordinates remain in the journal list and are omitted from the map.
-- The coastline is generated from Natural Earth 1:110m land data. To refresh it, download `ne_110m_land.geojson` and run:
+```yaml
+cover_image: "/my-trip.jpg"
+cover_image_alt: "A short description of the photo"
+```
 
-  ```bash
-  node scripts/generate-world-map.mjs ne_110m_land.geojson themes/karthik-www-theme/layouts/partials/world-map-land.html
-  ```
+Without a photo, the journal card uses a colored country panel. Common activity labels are `workcation`, `offsite`, `holiday`, `cycling`, `hiking`, `camping`, and `conference`. Use `travel` if the purpose of a trip is not recorded yet.
 
-## 4. Optional Story Components
+## Linking cycling rides on Strava
 
-Use the `travel-callout`, `travel-day`, `travel-gallery`, and `travel-stat` shortcodes to structure longer entries. Add meaningful `alt` text when using a gallery:
+Copy each ride's link from Strava and add it to the trip's frontmatter. You can list several rides for one vacation:
+
+```yaml
+strava_activities:
+  - title: "Ghent to Bruges coastal loop"
+    url: "https://www.strava.com/activities/1234567890"
+  - title: "Another day on the bike"
+    url: "https://www.strava.com/activities/2345678901"
+```
+
+The links appear on the trip page. Leave the field out for trips without recorded rides. The linked activity must be visible to visitors who open it; check its Strava privacy setting before sharing. No Strava API keys or automatic sync are needed.
+
+For a longer note, write ordinary Markdown below the frontmatter. The `travel-callout`, `travel-day`, `travel-gallery`, and `travel-stat` shortcodes are also available. For example:
 
 ```go-html-template
 {{</* travel-gallery images="/one.jpg,/two.jpg" alt="Cycling beside the coast" */>}}

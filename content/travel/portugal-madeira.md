@@ -1,29 +1,20 @@
 ---
 title: "Lisbon, Porto & Madeira"
-date: 2024-11-10
+date: 2025-03-01
+date_precision: "month"
 
 activities: ["holiday", "hiking"]
 country: "Portugal"
 
-description: "Trip through Lisbon, Porto, and levada trail hikes in Madeira."
+description: "A spontaneous trip with a friend through Lisbon and Porto, followed by levada hikes in Madeira."
 
-# Main map pin (representative location for the overview)
-latitude: 38.7223
-longitude: -9.1393
-location: "Madeira, Portugal"
-
-locations:
-  - name: "Lisbon"
-    latitude: 38.7223
-    longitude: -9.1393
-  - name: "Porto"
-    latitude: 41.1579
-    longitude: -8.6291
-  - name: "Madeira (Funchal)"
-    latitude: 32.6669
-    longitude: -16.9241
+places: ["Lisbon", "Porto", "Madeira (Funchal)"]
+cover_image: "/madeira.jpg"
+cover_image_alt: "Misty trail through the trees in Madeira"
 
 draft: false
 ---
 
-Exploring Lisbon, Porto, and a spontaneous getaway to Madeira to hike levada trails and mountain ridges above the clouds.
+I joined a friend's trip to Portugal in March 2025, spending time in Lisbon and Porto before a spontaneous getaway to Madeira. In Porto, we made a game of trying pastéis de nata from bakeries as we explored.
+
+Madeira was for walking: levada trails and mountain ridges above the clouds. The unplanned part of the trip became one of my favorite memories from that year.

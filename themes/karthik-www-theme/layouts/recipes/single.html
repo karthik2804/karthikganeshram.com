@@ -1,0 +1,31 @@
+{{ define "main" }}
+  <article class="recipe-entry">
+    <a class="recipe-back" href="{{ "/recipes/" | relURL }}">← All recipes</a>
+    <header class="recipe-entry-header">
+      <p class="recipes-eyebrow">{{ .Params.category | default "Recipe" }}</p>
+      <h1>{{ .Title }}</h1>
+      {{ with .Params.description }}<p class="recipe-entry-deck">{{ . }}</p>{{ end }}
+      {{ if or .Params.prep_minutes .Params.cook_minutes .Params.servings }}
+        <dl class="recipe-entry-facts">
+          {{ with .Params.prep_minutes }}<div><dt>Prep</dt><dd>{{ . }} min</dd></div>{{ end }}
+          {{ with .Params.cook_minutes }}<div><dt>Cook</dt><dd>{{ . }} min</dd></div>{{ end }}
+          {{ with .Params.servings }}<div><dt>Makes</dt><dd>{{ . }}</dd></div>{{ end }}
+        </dl>
+      {{ end }}
+    </header>
+    {{ with .Params.image }}
+      <figure class="recipe-entry-image"><img src="{{ . | relURL }}" alt="{{ $.Params.image_alt | default "" }}" decoding="async" fetchpriority="high" /></figure>
+    {{ end }}
+    <div class="recipe-entry-body">
+      {{ with .Params.ingredients }}
+        <aside class="recipe-ingredients" aria-labelledby="recipe-ingredients-title">
+          <p class="recipes-eyebrow">What you need</p>
+          <h2 id="recipe-ingredients-title">Ingredients</h2>
+          <ul>{{ range . }}{{ if . }}<li>{{ . }}</li>{{ end }}{{ end }}</ul>
+        </aside>
+      {{ end }}
+      <div class="recipe-method">{{ .Content }}</div>
+    </div>
+    <a class="recipe-entry-end" href="{{ "/recipes/" | relURL }}">More recipes <span aria-hidden="true">↗</span></a>
+  </article>
+{{ end }}

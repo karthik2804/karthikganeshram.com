@@ -1,20 +1,11 @@
 {{ define "main" }}
   <header class="page-hero">
     <h1>{{ .Title }}</h1>
-    <p>Reflections, personal updates, and occasional technical deep dives.</p>
+    {{ with .Description }}<p>{{ . }}</p>{{ end }}
   </header>
-  {{ $groups := slice
-    (dict "title" "Latest" "pages" (first 3 .Pages))
-    (dict "title" "Reflections" "pages" (where .Pages "Params.categories" "intersect" (slice "reflection")))
-    (dict "title" "Personal" "pages" (where .Pages "Params.categories" "intersect" (slice "personal")))
-    (dict "title" "Tutorials" "pages" (where .Pages "Params.categories" "intersect" (slice "tutorials")))
-  }}
-  {{ range $groups }}
-    {{ if .pages }}
-      <section class="post-list-section">
-        <div class="section-heading"><div><h2>{{ .title }}</h2></div></div>
-        <div class="post-list">{{ range .pages }}{{ partial "list_item" . }}{{ end }}</div>
-      </section>
-    {{ end }}
-  {{ end }}
+  {{ $posts := (where site.RegularPages "Section" "blog").ByDate.Reverse }}
+  <section class="post-list-section" aria-labelledby="all-posts">
+    <div class="section-heading"><h2 id="all-posts">All posts</h2></div>
+    <div class="post-list">{{ range $posts }}{{ partial "list_item" . }}{{ end }}</div>
+  </section>
 {{ end }}

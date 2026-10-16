@@ -1,5 +1,5 @@
 ---
 title: "Travel"
 layout: "travel"
-description: "Travel notes from cycling trips, workcations, conferences, and weekends away."
+description: "Bike rides, workcations, mountain paths, and the places in between."
 ---

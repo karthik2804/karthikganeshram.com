@@ -5,43 +5,15 @@ date: 2022-03-21
 activities: ["cycling"]
 country: "USA"
 
-description: "150 km endurance ride from Davis across Dixon, Vacaville, Fairfield, Vallejo towards San Francisco."
+description: "My attempt to ride 150 km from Davis to San Francisco, cut short by a flat tire with about 20 km to go."
 
-# Main map pin
-latitude: 37.7749
-longitude: -122.4194
-location: "San Francisco, CA"
-
-# Cycling waypoints & route coordinates
-locations:
-  - name: "Davis"
-    latitude: 38.5449
-    longitude: -121.7405
-  - name: "Dixon"
-    latitude: 38.4455
-    longitude: -121.8233
-  - name: "Vacaville"
-    latitude: 38.3566
-    longitude: -121.9877
-  - name: "Fairfield"
-    latitude: 38.2494
-    longitude: -122.0399
-  - name: "Vallejo"
-    latitude: 38.1041
-    longitude: -122.2566
-  - name: "San Francisco"
-    latitude: 37.7749
-    longitude: -122.4194
-
-route:
-  - [38.5449, -121.7405]
-  - [38.4455, -121.8233]
-  - [38.3566, -121.9877]
-  - [38.2494, -122.0399]
-  - [38.1041, -122.2566]
-  - [37.7749, -122.4194]
+places: ["Davis", "Dixon", "Vacaville", "Fairfield", "Vallejo", "San Francisco"]
+cover_image: "/Davis2SFcover.jpg"
+cover_image_alt: "Road bike parked beside a bridge railing"
 
 draft: false
 ---
 
-Attempting the 150 km (93 miles) ride from Davis to San Francisco after starting cycling as a hobby during master's at UC Davis.
+In March 2022, I set out from Davis before dawn to try to ride the 150 km to San Francisco. After starting cycling during my master's at UC Davis, this was the longest ride I had attempted.
+
+A puncture near Fairfield nearly ended the ride, but Mike helped me get going again. My rear tire failed a second time about 20 km from the Golden Gate Bridge. Friends picked me up, and we ended the day together in San Francisco. I told the full story in [my biking journey](/blog/my-biking-journey-davis-to-san-francisco/).

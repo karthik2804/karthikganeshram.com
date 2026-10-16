@@ -1,25 +1,18 @@
 ---
 title: "Nice & Paris Vacation"
-date: 2025-05-10
+date: 2025-09-01
+date_precision: "month"
 
 activities: ["holiday"]
 country: "France"
 
-description: "Vacation in Nice on the French Riviera and Paris with a coworker."
+description: "A late-September vacation in Nice and Paris with coworkers before a work offsite."
 
-latitude: 43.7102
-longitude: 7.2620
-location: "Nice & Paris, France"
-
-locations:
-  - name: "Nice"
-    latitude: 43.7102
-    longitude: 7.2620
-  - name: "Paris"
-    latitude: 48.8566
-    longitude: 2.3522
+places: ["Nice", "Paris"]
 
 draft: false
 ---
 
-Vacation in Nice on the French Riviera and Paris with a coworker.
+Before a work offsite in late September 2025, I took a vacation in Nice and Paris with coworkers. Between the two cities, I kept finding reasons to stop at cafés for croissants, éclairs, and coffee.
+
+Those unhurried mornings became some of my favorite parts of the trip.

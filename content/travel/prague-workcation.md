@@ -1,23 +1,16 @@
 ---
 title: "Prague Workcation"
-date: 2026-07-10
+date: 2026-07-01
+date_precision: "month"
 
 activities: ["workcation"]
 country: "Czech Republic"
 
-description: "A few days of workcation in Prague in July 2026."
+description: "A July 2026 workcation in Prague, with plenty of walking, food, and time to explore."
 
-# Main map pin (One pin per trip)
-latitude: 50.0755
-longitude: 14.4378
-location: "Prague, Czech Republic"
-
-locations:
-  - name: "Prague"
-    latitude: 50.0755
-    longitude: 14.4378
+places: ["Prague"]
 
 draft: false
 ---
 
-Spent a few days working remotely and exploring Prague in July 2026.
+I spent a few days working remotely from Prague in July 2026. Outside work, I spent a lot of time walking around the city and trying different food.

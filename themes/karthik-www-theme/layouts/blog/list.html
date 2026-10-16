@@ -1,0 +1,52 @@
+{{ define "main" }}
+  {{ $posts := (where site.RegularPages "Section" "blog").ByDate.Reverse }}
+  <div class="writing-page">
+    <header class="writing-intro">
+      <p class="section-kicker">The journal</p>
+      <h1>{{ .Title }}</h1>
+      {{ with .Description }}<p class="writing-intro-deck">{{ . }}</p>{{ end }}
+    </header>
+
+    {{ if gt (len $posts) 0 }}
+      {{ $featured := index $posts 0 }}
+      <section class="writing-feature" aria-labelledby="latest-essay">
+        <div class="writing-section-heading">
+          <h2 id="latest-essay">Latest essay</h2>
+          <span>{{ len $posts }} posts and counting</span>
+        </div>
+        <article class="featured-post{{ if not $featured.Params.header_image }} featured-post--text{{ end }}">
+          <div class="featured-post-copy">
+            <p class="featured-post-meta">
+              {{ with $featured.Params.categories }}{{ index . 0 | humanize }} <span aria-hidden="true">·</span> {{ end }}
+              <time datetime="{{ $featured.Date.Format "2006-01-02" }}">{{ $featured.Date.Format "2 January 2006" }}</time>
+            </p>
+            <h3><a href="{{ $featured.RelPermalink }}">{{ $featured.Title }}</a></h3>
+            <p class="featured-post-excerpt">{{ $featured.Description | default ($featured.Summary | plainify | truncate 210) }}</p>
+            <a class="featured-post-link" href="{{ $featured.RelPermalink }}">Read the essay <span aria-hidden="true">↗</span></a>
+          </div>
+          {{ with $featured.Params.header_image }}
+            <a class="featured-post-image" href="{{ $featured.RelPermalink }}" tabindex="-1" aria-hidden="true">
+              <img src="{{ . | relURL }}" alt="" decoding="async" fetchpriority="high" />
+            </a>
+          {{ end }}
+        </article>
+      </section>
+    {{ end }}
+
+    {{ $archive := after 1 $posts }}
+    {{ if $archive }}
+      <section class="writing-archive" aria-labelledby="more-writing">
+        <div class="writing-section-heading">
+          <h2 id="more-writing">More writing</h2>
+          <span>Browse by year</span>
+        </div>
+        {{ range $archive.GroupByDate "2006" }}
+          <div class="writing-year-group">
+            <h3>{{ .Key }}</h3>
+            <div class="post-list">{{ range .Pages }}{{ partial "list_item" . }}{{ end }}</div>
+          </div>
+        {{ end }}
+      </section>
+    {{ end }}
+  </div>
+{{ end }}

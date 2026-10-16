@@ -1,0 +1,57 @@
+{{ define "main" }}
+  {{ $recipes := (where site.RegularPages "Section" "recipes").ByTitle }}
+  <div class="recipes-page">
+    <header class="recipes-hero">
+      <p class="recipes-eyebrow">From my kitchen</p>
+      <h1>{{ .Title }}<span aria-hidden="true">.</span></h1>
+      <div class="recipes-intro">{{ .Content }}</div>
+      {{ if $recipes }}<p class="recipes-count">{{ len $recipes }} {{ if eq (len $recipes) 1 }}recipe{{ else }}recipes{{ end }} in the box</p>{{ end }}
+    </header>
+
+    {{ if $recipes }}
+      <nav class="recipes-categories" aria-label="Recipe categories">
+        {{ range $recipes.GroupByParam "category" }}
+          <a href="#{{ .Key | urlize }}">{{ .Key }} <span>{{ len .Pages }}</span></a>
+        {{ end }}
+      </nav>
+      {{ range $group := $recipes.GroupByParam "category" }}
+        <section class="recipes-section" aria-labelledby="category-{{ $group.Key | urlize }}" id="{{ $group.Key | urlize }}">
+          <div class="recipes-section-heading">
+            <h2 id="category-{{ $group.Key | urlize }}">{{ $group.Key }}</h2>
+            <span>{{ len $group.Pages }} {{ if eq (len $group.Pages) 1 }}recipe{{ else }}recipes{{ end }}</span>
+          </div>
+          <div class="recipes-grid">
+            {{ range $recipe := $group.Pages.ByTitle }}
+              <article class="recipe-card">
+                <div class="recipe-card-visual{{ if not .Params.image }} recipe-card-visual--empty{{ end }}">
+                  {{ with .Params.image }}
+                    <img src="{{ . | relURL }}" alt="" loading="lazy" decoding="async" />
+                  {{ else }}
+                    <span>{{ $group.Key }}</span><span aria-hidden="true">✳</span>
+                  {{ end }}
+                </div>
+                <div class="recipe-card-copy">
+                  <p class="recipe-card-category">{{ .Params.category }}</p>
+                  <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+                  {{ with .Params.description }}<p class="recipe-card-description">{{ . }}</p>{{ end }}
+                  <div class="recipe-card-footer">
+                    <span>
+                      {{ with .Params.prep_minutes }}Prep {{ . }} min{{ end }}
+                      {{ with .Params.cook_minutes }}{{ if $recipe.Params.prep_minutes }} · {{ end }}Cook {{ . }} min{{ end }}
+                    </span>
+                    <span aria-hidden="true">↗</span>
+                  </div>
+                </div>
+              </article>
+            {{ end }}
+          </div>
+        </section>
+      {{ end }}
+    {{ else }}
+      <section class="recipes-empty" aria-label="Recipe collection status">
+        <span aria-hidden="true">✳</span>
+        <div><h2>The recipe box is open.</h2><p>The first recipes will appear here soon.</p></div>
+      </section>
+    {{ end }}
+  </div>
+{{ end }}

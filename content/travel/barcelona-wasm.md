@@ -7,17 +7,11 @@ country: "Spain"
 
 description: "Speaking at Wasm I/O conference in Barcelona and exploring Catalan architecture."
 
-# Main map pin (One pin per trip)
-latitude: 41.3851
-longitude: 2.1734
-location: "Barcelona, Spain"
-
-locations:
-  - name: "Barcelona"
-    latitude: 41.3851
-    longitude: 2.1734
+places: ["Barcelona"]
+cover_image: "/wasmio_2025_talk.jpg"
+cover_image_alt: "Speaking at Wasm I/O in Barcelona"
 
 draft: false
 ---
 
-Speaking at Wasm I/O in Barcelona, spending time with colleagues, and exploring the city.
+I went to Barcelona in March 2025 to speak at Wasm I/O. I arrived early to spend time with a coworker outside meetings, and we wandered into bakeries while exploring the city. Between the talk and the time together, I also got to see some of Barcelona's architecture.

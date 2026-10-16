@@ -1,23 +1,18 @@
 ---
 title: "Copenhagen Workcation"
-date: 2025-06-15
+date: 2025-07-01
+date_precision: "month"
 
 activities: ["workcation"]
 country: "Denmark"
 
-description: "A few days of workcation in Copenhagen in June 2025."
+description: "A short solo workcation in Copenhagen in July 2025, with quiet mornings, pastries, and coffee."
 
-# Main map pin (One pin per trip)
-latitude: 55.6761
-longitude: 12.5683
-location: "Copenhagen, Denmark"
-
-locations:
-  - name: "Copenhagen"
-    latitude: 55.6761
-    longitude: 12.5683
+places: ["Copenhagen"]
 
 draft: false
 ---
 
-Spent a few days working remotely and exploring Copenhagen in June 2025.
+I took a short solo trip to Copenhagen in July 2025 and worked remotely for a few days. It was a reminder of how much I enjoy traveling on my own.
+
+Outside work, I spent quiet mornings wandering the city, stopping for Danish pastries and coffee along the way.

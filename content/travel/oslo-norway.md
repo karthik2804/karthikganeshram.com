@@ -1,22 +1,18 @@
 ---
 title: "Oslo Company Offsite"
 date: 2025-05-20
+date_precision: "month"
 
 activities: ["offsite"]
 country: "Norway"
 
-description: "Company offsite in Oslo, Norway."
+description: "A company offsite in Oslo, with three early days to explore the city with a coworker."
 
-latitude: 59.9139
-longitude: 10.7522
-location: "Oslo, Norway"
-
-locations:
-  - name: "Oslo"
-    latitude: 59.9139
-    longitude: 10.7522
+places: ["Oslo"]
 
 draft: false
 ---
 
-Company offsite in Oslo, Norway.
+I went to Oslo in May 2025 for a company offsite, arriving early after a conference in Berlin. That gave me three days to explore Oslo with a coworker before the offsite began.
+
+After those days in the city, the trip became a chance to spend time with the wider team in person.

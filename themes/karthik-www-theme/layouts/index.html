@@ -1,6 +1,15 @@
 {{ define "main" }}
   <section class="home-hero">
-    <div class="home-intro">{{ .Content }}</div>
+    <div class="home-intro">
+      <img src="{{ .Params.portrait | relURL }}" alt="Portrait of Karthik" width="320" height="320" />
+      <div class="home-intro-copy">
+        {{ .Content }}
+        <nav class="home-actions" aria-label="Explore the site">
+          <a href="/blog/">Read my writing <span aria-hidden="true">↗</span></a>
+          <a href="/travel/">Explore my travels <span aria-hidden="true">↗</span></a>
+        </nav>
+      </div>
+    </div>
   </section>
   <section class="home-writing" aria-labelledby="latest-posts">
     <div class="section-heading">
