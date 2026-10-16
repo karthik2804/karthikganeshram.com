@@ -164,14 +164,26 @@ main a:hover {
 .journal-neighbors a > span:last-child { align-self: end; color: var(--accent); }
 
 .about-page { max-width: 56rem; margin-inline: auto; }
-.about-page .page-hero { max-width: 44rem; padding-bottom: 3.25rem; }
-.about-page .page-hero h1 { max-width: 11ch; font-size: clamp(2.75rem, 5vw, 4.25rem); line-height: .98; text-wrap: balance; }
-.about-content { display: flow-root; max-width: 48rem; color: var(--ink); font-size: 1.04rem; line-height: 1.78; text-wrap: pretty; }
-.about-content > p:first-of-type img,
-.about-content > img:first-child { float: left; width: min(40%, 17rem); margin: .35rem 3rem 1.5rem 0; filter: saturate(.82) contrast(.98); }
-.about-content p { margin: 0 0 1.25rem; font-size: inherit; line-height: inherit; }
-.about-content > p:nth-child(2) { color: #354139; font-size: 1.18rem; line-height: 1.7; }
+.about-hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(12rem, 16rem); align-items: center; gap: clamp(2rem, 6vw, 5rem); padding: 1rem 0 3.5rem; border-bottom: 1px solid var(--line); }
+.about-hero h1 { margin: .7rem 0 1rem; font-family: Georgia, "Times New Roman", serif; font-size: clamp(3.6rem, 7vw, 5.5rem); font-weight: 400; letter-spacing: -.06em; line-height: .95; }
+.about-hero-copy > p:last-child { max-width: 28rem; margin: 0; color: var(--muted); font-size: 1.1rem; line-height: 1.6; }
+.about-hero img { width: 100%; height: auto; margin: 0; filter: saturate(.82) contrast(.98); }
+.about-content { max-width: 43rem; margin: 3rem 0 4rem; color: var(--ink); font-size: 1.04rem; line-height: 1.78; text-wrap: pretty; }
+.about-content p { margin: 0 0 1.3rem; font-size: inherit; line-height: inherit; }
+.about-content > p:first-child { font-size: 1.18rem; line-height: 1.68; }
+.about-content h2 { margin: 2.8rem 0 .85rem; font-family: Georgia, "Times New Roman", serif; font-size: 1.75rem; font-weight: 400; letter-spacing: -.035em; line-height: 1.2; }
 .about-content a { color: var(--accent); text-underline-offset: .16em; }
+.about-instagram { display: grid; grid-template-columns: minmax(0, 1fr) minmax(14rem, 25rem); align-items: start; gap: 2rem 3.5rem; padding-top: 2.5rem; border-top: 1px solid var(--line); }
+.about-instagram--link { grid-template-columns: 1fr; }
+.about-instagram-copy h2 { margin: .4rem 0 .8rem; font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 400; letter-spacing: -.04em; line-height: 1.15; }
+.about-instagram-copy > p:not(.section-kicker) { max-width: 26rem; margin: 0 0 1rem; color: var(--muted); font-size: .94rem; line-height: 1.65; }
+.about-instagram-copy a { color: var(--ink); font-size: .86rem; font-weight: 700; text-decoration: none; }
+.about-instagram-copy a:hover { color: var(--accent); text-decoration: underline; text-underline-offset: .2em; }
+.about-instagram-preview { min-width: 0; min-height: 10rem; padding: 1.25rem; border: 1px solid var(--line); background: var(--paper-deep); }
+.about-instagram-preview [data-instagram-embed] { display: flex; justify-content: center; width: 100%; min-width: 0; overflow: hidden; }
+.about-instagram-preview .instagram-media { box-sizing: border-box; width: 100% !important; max-width: 100% !important; min-width: 0 !important; margin: 0 auto !important; padding: 0 !important; border: 0 !important; background: transparent !important; }
+.about-instagram-preview iframe { display: block; max-width: 100% !important; margin-inline: auto !important; }
+.about-instagram-status { margin: 0; color: var(--muted); font-size: .82rem; }
 
 /* ─── Reading ───────────────────────────────────────────────────────────── */
 .reading-page { max-width: 52rem; margin-inline: auto; }
@@ -218,9 +230,11 @@ main a:hover {
   .journal-content { font-size: 1.08rem; line-height: 1.75; }
   .journal-content > p:first-child { font-size: 1.17rem; }
   .journal-neighbors { grid-template-columns: 1fr; }
-  .about-content > p:first-of-type img,
-  .about-content > img:first-child { float: none; width: 100%; max-width: 18rem; margin: 0 0 2rem; }
-  .about-content > p:nth-child(2) { font-size: 1.1rem; }
+  .about-hero { grid-template-columns: 1fr; gap: 2rem; padding-bottom: 2.5rem; }
+  .about-hero img { grid-row: 1; max-width: 13rem; }
+  .about-content { margin: 2.5rem 0 3rem; }
+  .about-content > p:first-child { font-size: 1.1rem; }
+  .about-instagram { grid-template-columns: 1fr; }
   .book-list li { align-items: flex-start; flex-direction: column; }
   .book-details { text-align: left; }
   .site-footer { align-items: flex-start; flex-direction: column; }

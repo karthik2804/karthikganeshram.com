@@ -3,18 +3,21 @@ title: "About"
 date: 2025-07-26T23:26:35-07:00
 draft: false
 type: "about"
+description: "A little about Karthik Ganeshram: work, cycling, writing, and the things I like to make time for."
+portrait: "/karthik.png"
+instagram_url: "https://www.instagram.com/karthik_ganeshram/"
+instagram_handle: "@karthik_ganeshram"
+instagram_embed: true
 ---
 
-![Portrait of Karthik](/karthik.png)
+I grew up in Chennai, studied computer engineering at UC Davis, and now live in Rotterdam. I’m a senior software engineer at Akamai, working on server-side WebAssembly and cloud computing.
 
-I grew up in Chennai, India, and moved to the US for my master’s degree in computer engineering at UC Davis. I’m a software engineer and currently live in the Netherlands.
+## Away from work
 
-When I’m not immersed in work or studying, I enjoy listening to music—especially rock, though I appreciate a wide range of styles. I also indulge in some gaming to unwind. Occasionally, I pick up my camera and try my hand at photography—you can see some of my snapshots on my [Instagram](https://www.instagram.com/karthik_ganeshram/).
+I got into cycling during my master’s in Davis. These days it’s one of my favorite ways to explore, whether I’m riding around the Netherlands or planning a trip around the bike. I also like hiking and taking photos when I travel.
 
-Biking is another hobby close to my heart. It started as a pastime during my M.S. degree at UC Davis and has since become a wonderful way for me to explore new places and clear my mind.
+At home, I like cooking, reading, rock music, the occasional game, and a good cup of coffee.
 
-I also love hiking and am currently exploring Europe while living in the Netherlands. I really enjoyed hiking in Madeira — the landscapes were breathtaking. So far, I’ve been fortunate to visit Portugal, Spain, Belgium, France, Denmark, Norway, Sweden, and Germany, and I’m excited to discover even more of this incredible region. For me, traveling is all about experiencing new cultures, tasting local cuisines, and connecting with nature.
+## This site
 
-I’m also a big fan of good coffee — nothing quite like a great cup to fuel creativity and reflection.
-
-I’m an avid reader, especially drawn to philosophy, self-improvement, and biographies. Books help me gain new perspectives and continually expand my understanding of the world and myself.
+I keep my [writing](/blog/), [travel notes](/travel/), [reading list](/reading/), and [recipes](/recipes/) here. It’s a place to collect what I’m learning and the moments I want to remember.

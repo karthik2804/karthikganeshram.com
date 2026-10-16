@@ -18,5 +18,10 @@
         <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" defer></script>
       {{ end }}
     {{ end }}
+    {{ if and (eq .Type "about") .Params.instagram_embed }}
+      {{ with resources.Get "js/about-instagram.js" | minify | fingerprint }}
+        <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" defer></script>
+      {{ end }}
+    {{ end }}
   </body>
 </html>

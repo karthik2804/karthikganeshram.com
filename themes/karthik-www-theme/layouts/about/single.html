@@ -1,6 +1,33 @@
 {{ define "main" }}
   <article class="about-page">
-    <header class="page-hero"><h1>{{ .Title }}</h1></header>
+    <header class="about-hero">
+      <div class="about-hero-copy">
+        <p class="section-kicker">Hello</p>
+        <h1>{{ .Title }}</h1>
+        <p>Engineer, cyclist, and curious person living in Rotterdam.</p>
+      </div>
+      {{ with .Params.portrait }}<img src="{{ . | relURL }}" alt="Karthik by the water in Rotterdam" width="963" height="1280" fetchpriority="high" />{{ end }}
+    </header>
     <div class="about-content">{{ .Content }}</div>
+    {{ with .Params.instagram_url }}
+      <section class="about-instagram{{ if not $.Params.instagram_embed }} about-instagram--link{{ end }}" aria-labelledby="about-instagram-title">
+        <div class="about-instagram-copy">
+          <p class="section-kicker">Photography</p>
+          <h2 id="about-instagram-title">A few photos, elsewhere</h2>
+          <p>I also share some of the places and everyday moments I photograph on Instagram.</p>
+          <a href="{{ . }}" target="_blank" rel="noopener noreferrer">Visit {{ $.Params.instagram_handle | default "my Instagram" }} <span aria-hidden="true">↗</span></a>
+        </div>
+        {{ if $.Params.instagram_embed }}
+          <div class="about-instagram-preview">
+            <div data-instagram-embed>
+              <blockquote class="instagram-media" data-instgrm-permalink="{{ . }}" data-instgrm-version="14">
+                <a href="{{ . }}" target="_blank" rel="noopener noreferrer">Open Instagram profile</a>
+              </blockquote>
+            </div>
+            <p class="about-instagram-status" data-instagram-status role="status">Loading Instagram…</p>
+          </div>
+        {{ end }}
+      </section>
+    {{ end }}
   </article>
 {{ end }}
