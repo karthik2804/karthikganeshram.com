@@ -12,7 +12,7 @@
     {{ with .Params.instagram_url }}
       <section class="about-instagram{{ if not $.Params.instagram_embed }} about-instagram--link{{ end }}" aria-labelledby="about-instagram-title">
         <div class="about-instagram-copy">
-          <p class="section-kicker">Photography</p>
+          <p class="section-kicker eyebrow-with-icon"><img src="{{ "/icons/camera.svg" | relURL }}" alt="" aria-hidden="true" width="40" height="40" />Photography</p>
           <h2 id="about-instagram-title">A few photos, elsewhere</h2>
           <p>I also share some of the places and everyday moments I photograph on Instagram.</p>
           <a href="{{ . }}" target="_blank" rel="noopener noreferrer">Visit {{ $.Params.instagram_handle | default "my Instagram" }} <span aria-hidden="true">↗</span></a>
