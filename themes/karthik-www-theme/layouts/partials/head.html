@@ -35,12 +35,16 @@
   {{ end }}
 {{ end }}
 {{ if eq .Section "travel" }}
-  {{ with resources.Get "css/travel.css" | minify | fingerprint }}
-    <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" />
+  {{ with resources.Get "css/travel.css" }}
+    {{ with . | minify | fingerprint }}
+      <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" />
+    {{ end }}
   {{ end }}
 {{ end }}
 {{ if eq .Section "recipes" }}
-  {{ with resources.Get "css/recipes.css" | minify | fingerprint }}
-    <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" />
+  {{ with resources.Get "css/recipes.css" }}
+    {{ with . | minify | fingerprint }}
+      <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" />
+    {{ end }}
   {{ end }}
 {{ end }}

@@ -23,5 +23,12 @@
         <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" defer></script>
       {{ end }}
     {{ end }}
+    {{ if and (eq .Section "recipes") (eq .Kind "section") }}
+      {{ with resources.Get "js/recipes.js" }}
+        {{ with . | minify | fingerprint }}
+          <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" defer></script>
+        {{ end }}
+      {{ end }}
+    {{ end }}
   </body>
 </html>

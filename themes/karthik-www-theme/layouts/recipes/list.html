@@ -1,45 +1,82 @@
 {{ define "main" }}
   {{ $recipes := (where site.RegularPages "Section" "recipes").ByTitle }}
+  {{ $sweets := slice }}
+  {{ $other := slice }}
+  {{ range $recipes }}
+    {{ if in (slice "Cookies" "Desserts") .Params.category }}
+      {{ $sweets = $sweets | append . }}
+    {{ else if ne .Params.category "Cooking" }}
+      {{ $other = $other | append . }}
+    {{ end }}
+  {{ end }}
+  {{ $sections := slice
+    (dict "title" "Cooking" "id" "cooking" "kicker" "On the stove & beyond" "intro" "The meals and small things I make on repeat." "icon" "/icons/recipe-bowl.svg" "pages" (where $recipes "Params.category" "Cooking"))
+    (dict "title" "Sweet things" "id" "sweets" "kicker" "Bakes & desserts" "intro" "Cookies and the other sweet things I make." "icon" "/icons/recipe-cookie.svg" "pages" $sweets)
+    (dict "title" "More recipes" "id" "more" "kicker" "Also in my kitchen" "intro" "Other things I’ve been making." "icon" "/icons/recipe-bowl.svg" "pages" $other)
+  }}
   <div class="recipes-page">
     <header class="recipes-hero">
-      <p class="recipes-eyebrow">From my kitchen</p>
-      <h1>{{ .Title }}<span aria-hidden="true">.</span></h1>
-      <div class="recipes-intro">{{ .Content }}</div>
-      {{ if $recipes }}<p class="recipes-count">{{ len $recipes }} {{ if eq (len $recipes) 1 }}recipe{{ else }}recipes{{ end }} in the box</p>{{ end }}
+      <div class="recipes-hero-copy">
+        <p class="recipes-eyebrow">From my kitchen</p>
+        <h1>{{ .Title }}<span aria-hidden="true">.</span></h1>
+        <div class="recipes-intro">{{ .Content }}</div>
+        {{ with $recipes }}<p class="recipes-count">{{ len . }} recipes, and counting</p>{{ end }}
+      </div>
+      <div class="recipes-hero-art" aria-hidden="true">
+        <img src="{{ "/icons/recipe-bowl.svg" | relURL }}" alt="" width="40" height="40" />
+      </div>
     </header>
 
-    {{ if $recipes }}
-      <nav class="recipes-categories" aria-label="Recipe categories">
-        {{ range $recipes.GroupByParam "category" }}
-          <a href="#{{ .Key | urlize }}">{{ .Key }} <span>{{ len .Pages }}</span></a>
-        {{ end }}
-      </nav>
-      {{ range $group := $recipes.GroupByParam "category" }}
-        <section class="recipes-section" aria-labelledby="category-{{ $group.Key | urlize }}" id="{{ $group.Key | urlize }}">
+    {{ with $recipes }}
+      <div class="recipes-filters" data-recipes-filters hidden>
+        <div class="recipes-filter-field recipes-filter-search">
+          <label for="recipe-search">Search recipes</label>
+          <input id="recipe-search" type="search" placeholder="Try paneer, chocolate, garlic…" autocomplete="off" data-recipe-search />
+        </div>
+        <div class="recipes-filter-field">
+          <label for="recipe-category">Category</label>
+          <select id="recipe-category" data-recipe-category>
+            <option value="">All categories</option>
+            {{ range $recipes.GroupByParam "category" }}
+              <option value="{{ .Key | urlize }}">{{ .Key }}</option>
+            {{ end }}
+          </select>
+        </div>
+        <label class="recipes-filter-check"><input type="checkbox" data-recipe-eggless /> Eggless available</label>
+        <div class="recipes-filter-result">
+          <p aria-live="polite" aria-atomic="true" data-recipe-count>{{ len . }} recipes shown</p>
+          <button type="button" data-recipe-clear hidden>Clear filters</button>
+        </div>
+      </div>
+    {{ end }}
+
+    {{ range $section := $sections }}
+      {{ with $section.pages }}
+        <section class="recipes-section" id="{{ $section.id }}" aria-labelledby="heading-{{ $section.id }}">
           <div class="recipes-section-heading">
-            <h2 id="category-{{ $group.Key | urlize }}">{{ $group.Key }}</h2>
-            <span>{{ len $group.Pages }} {{ if eq (len $group.Pages) 1 }}recipe{{ else }}recipes{{ end }}</span>
+            <div>
+              <p class="recipes-section-label"><img src="{{ $section.icon | relURL }}" alt="" width="40" height="40" loading="lazy" /> {{ $section.kicker }}</p>
+              <h2 id="heading-{{ $section.id }}">{{ $section.title }}</h2>
+              <p>{{ $section.intro }}</p>
+            </div>
+            <span data-recipe-section-count>{{ len . }} {{ if eq (len .) 1 }}recipe{{ else }}recipes{{ end }}</span>
           </div>
-          <div class="recipes-grid">
-            {{ range $recipe := $group.Pages.ByTitle }}
-              <article class="recipe-card">
-                <div class="recipe-card-visual{{ if not .Params.image }} recipe-card-visual--empty{{ end }}">
-                  {{ with .Params.image }}
-                    <img src="{{ . | relURL }}" alt="" loading="lazy" decoding="async" />
-                  {{ else }}
-                    <span>{{ $group.Key }}</span><span aria-hidden="true">✳</span>
-                  {{ end }}
-                </div>
+          <div class="recipes-grid {{ if eq $section.id "sweets" }}recipes-grid--sweets{{ end }}">
+            {{ range $recipe := . }}
+              {{ $searchTerms := slice $recipe.Title ($recipe.Params.description | default "") ($recipe.Params.recipe_type | default "") }}
+              {{ range $recipe.Params.ingredients }}{{ $searchTerms = $searchTerms | append . }}{{ end }}
+              {{ range $recipe.Params.ingredient_groups }}{{ range .items }}{{ $searchTerms = $searchTerms | append . }}{{ end }}{{ end }}
+              <article class="recipe-card" data-recipe-card data-category="{{ $recipe.Params.category | urlize }}" data-eggless="{{ if $recipe.Params.eggless }}true{{ else }}false{{ end }}" data-search="{{ delimit $searchTerms " " | lower }}">
+                {{ with $recipe.Params.image }}<div class="recipe-card-visual"><img src="{{ . | relURL }}" alt="" loading="lazy" decoding="async" /></div>{{ end }}
                 <div class="recipe-card-copy">
-                  <p class="recipe-card-category">{{ .Params.category }}</p>
-                  <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-                  {{ with .Params.description }}<p class="recipe-card-description">{{ . }}</p>{{ end }}
+                  {{ with $recipe.Params.recipe_type }}<p class="recipe-card-tag">{{ . }}</p>{{ else }}{{ if eq $section.id "more" }}<p class="recipe-card-tag">{{ $recipe.Params.category | default "Recipe" }}</p>{{ end }}{{ end }}
+                  <h3><a href="{{ $recipe.RelPermalink }}">{{ $recipe.Title }}</a></h3>
+                  {{ with $recipe.Params.description }}<p class="recipe-card-description">{{ . }}</p>{{ end }}
                   <div class="recipe-card-footer">
-                    <span>
-                      {{ with .Params.prep_minutes }}Prep {{ . }} min{{ end }}
-                      {{ with .Params.cook_minutes }}{{ if $recipe.Params.prep_minutes }} · {{ end }}Cook {{ . }} min{{ end }}
-                    </span>
-                    <span aria-hidden="true">↗</span>
+                    {{ if or $recipe.Params.prep_minutes $recipe.Params.cook_minutes }}
+                      <span class="recipe-card-time">{{ with $recipe.Params.prep_minutes }}Prep {{ . }} min{{ end }}{{ with $recipe.Params.cook_minutes }}{{ if $recipe.Params.prep_minutes }} · {{ end }}Cook {{ . }} min{{ end }}</span>
+                    {{ end }}
+                    <span class="recipe-card-action">Read recipe <span aria-hidden="true">↗</span></span>
                   </div>
                 </div>
               </article>
@@ -47,11 +84,7 @@
           </div>
         </section>
       {{ end }}
-    {{ else }}
-      <section class="recipes-empty" aria-label="Recipe collection status">
-        <span aria-hidden="true">✳</span>
-        <div><h2>The recipe box is open.</h2><p>The first recipes will appear here soon.</p></div>
-      </section>
     {{ end }}
+    <p class="recipes-filter-empty" data-recipe-empty hidden>No recipes match those filters. Try another search or clear the filters.</p>
   </div>
 {{ end }}

@@ -24,4 +24,10 @@ For cycling trips, add `strava_activities` with a title and public activity URL 
 
 ## Adding a recipe
 
-Run `hugo new recipes/my-recipe.md`. In the new file, set a category such as `Breakfast`, `Mains`, `Baking`, or `Drinks`; recipes are grouped by category automatically. Fill in the `ingredients` list and write the method below the frontmatter. Prep time, cook time, servings, and an image from `static/` are optional. Set `draft: false` when the recipe is ready to appear on `/recipes/`.
+Keep the recipe collection meat- and fish-free; egg recipes are included.
+
+Run `hugo new recipes/my-recipe.md`. Set `category` to `Cooking`, `Cookies`, or `Desserts`. Cookies and desserts appear together under **Sweet things**; any other category appears under **More recipes**. You can add a short `recipe_type` label such as `Indian cooking` or `Air fryer`. Fill in `ingredients` and write the method below the frontmatter. Prep time, cook time, servings, and an image from `static/` are optional. Set `draft: false` when the recipe is ready to appear on `/recipes/`.
+
+For recipes with separate parts, use `ingredient_groups` instead of `ingredients`; each group has a `name` and an `items` list. Leave `draft: true` while you are still writing the recipe.
+
+The recipe page can be searched by title, description, recipe label, and ingredients, then narrowed by category or eggless availability. Set `eggless: true` for a recipe that can be made without eggs, including one with an eggless variation, so it appears in the eggless filter.

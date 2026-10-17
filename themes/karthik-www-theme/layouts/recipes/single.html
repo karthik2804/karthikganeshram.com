@@ -2,14 +2,14 @@
   <article class="recipe-entry">
     <a class="recipe-back" href="{{ "/recipes/" | relURL }}">← All recipes</a>
     <header class="recipe-entry-header">
-      <p class="recipes-eyebrow">{{ .Params.category | default "Recipe" }}</p>
+      <p class="recipes-eyebrow">{{ .Params.recipe_type | default .Params.category }}</p>
       <h1>{{ .Title }}</h1>
       {{ with .Params.description }}<p class="recipe-entry-deck">{{ . }}</p>{{ end }}
       {{ if or .Params.prep_minutes .Params.cook_minutes .Params.servings }}
         <dl class="recipe-entry-facts">
           {{ with .Params.prep_minutes }}<div><dt>Prep</dt><dd>{{ . }} min</dd></div>{{ end }}
           {{ with .Params.cook_minutes }}<div><dt>Cook</dt><dd>{{ . }} min</dd></div>{{ end }}
-          {{ with .Params.servings }}<div><dt>Makes</dt><dd>{{ . }}</dd></div>{{ end }}
+          {{ with .Params.servings }}<div><dt>Yield</dt><dd>{{ . }}</dd></div>{{ end }}
         </dl>
       {{ end }}
     </header>
@@ -17,15 +17,19 @@
       <figure class="recipe-entry-image"><img src="{{ . | relURL }}" alt="{{ $.Params.image_alt | default "" }}" decoding="async" fetchpriority="high" /></figure>
     {{ end }}
     <div class="recipe-entry-body">
-      {{ with .Params.ingredients }}
+      {{ if or .Params.ingredients .Params.ingredient_groups }}
         <aside class="recipe-ingredients" aria-labelledby="recipe-ingredients-title">
-          <p class="recipes-eyebrow">What you need</p>
+          <p class="recipes-eyebrow">What goes in</p>
           <h2 id="recipe-ingredients-title">Ingredients</h2>
-          <ul>{{ range . }}{{ if . }}<li>{{ . }}</li>{{ end }}{{ end }}</ul>
+          {{ with .Params.ingredients }}<ul>{{ range . }}{{ if . }}<li>{{ . }}</li>{{ end }}{{ end }}</ul>{{ end }}
+          {{ range .Params.ingredient_groups }}
+            <h3>{{ .name }}</h3>
+            <ul>{{ range .items }}{{ if . }}<li>{{ . }}</li>{{ end }}{{ end }}</ul>
+          {{ end }}
         </aside>
       {{ end }}
       <div class="recipe-method">{{ .Content }}</div>
     </div>
-    <a class="recipe-entry-end" href="{{ "/recipes/" | relURL }}">More recipes <span aria-hidden="true">↗</span></a>
+    <a class="recipe-entry-end" href="{{ "/recipes/" | relURL }}">← Back to all recipes</a>
   </article>
 {{ end }}
