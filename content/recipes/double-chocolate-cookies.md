@@ -32,7 +32,7 @@ The cocoa goes into the dough and the chopped chocolate stays in pockets. I make
 
 1. Beat the butter and sugars until creamy. Mix in the vanilla and **either** the egg **or** the milk.
 2. Stir together the flour, cocoa, baking soda, and salt; for the eggless version, add the baking powder here too. Add to the butter mixture and mix just until no dry flour remains. Fold in the chocolate chunks.
-3. Chill the dough for at least 30 minutes. Heat the oven to **175°C** and line two baking trays.
+3. Chill the dough for at least 30 minutes. Heat the oven to **180°C** and line two baking trays.
 4. Divide the dough into 12 mounds, leaving plenty of room between them. Bake for **10–12 minutes**, until the edges are set and the centers still look soft. Cool on the trays for 10 minutes before moving them.
 
 ## Egg and eggless versions

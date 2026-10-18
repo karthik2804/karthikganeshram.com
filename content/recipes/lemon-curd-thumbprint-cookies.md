@@ -22,9 +22,9 @@ The cookie dough is a simple lemon shortbread. Add the curd after baking so its 
 ## Method
 
 1. Beat the butter and powdered sugar until smooth. Mix in the lemon zest and vanilla, then add the flour and salt. Mix just until the dough holds together.
-2. Chill for 20 minutes. Heat the oven to **170°C** and line two baking trays.
+2. Chill for 20 minutes. Heat the oven to **180°C** and line two baking trays.
 3. Roll the dough into 18 balls and set them a little apart on the trays. Press a shallow indentation into each with your thumb or the back of a teaspoon.
-4. Bake for **12–14 minutes**, until the bottoms and edges are lightly golden. If the centers puff up, gently press them down again while warm.
+4. Bake for **12–14 minutes**, until the bottoms and edges are lightly golden. If the centers puff up, gently press the indentations back down with the back of a teaspoon as soon as the cookies come out of the oven.
 5. Cool completely, then spoon lemon curd into each indentation. Store filled cookies in the fridge.
 
 ## Notes

@@ -26,7 +26,7 @@ These are sweet first, with the gochujang giving them warmth and a little savory
 
 1. Beat the butter and sugars until creamy. Mix in the egg, vanilla, and gochujang until evenly combined.
 2. Stir in the flour, baking soda, and salt just until no dry flour remains. Chill the dough for 30 minutes.
-3. Heat the oven to **175°C** and line two baking trays. Divide the dough into 12 balls. Roll their tops in sesame seeds if using, then set them well apart on the trays.
+3. Heat the oven to **180°C** and line two baking trays. Divide the dough into 12 balls. Roll their tops in sesame seeds if using, then set them well apart on the trays.
 4. Bake for **11–13 minutes**, until the edges are set and lightly browned. Cool on the trays for 10 minutes before moving them.
 
 ## Notes
