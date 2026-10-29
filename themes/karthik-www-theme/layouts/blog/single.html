@@ -10,7 +10,6 @@
     <header class="journal-header">
       {{ with .Params.categories }}<p class="section-kicker">{{ index . 0 | humanize }}</p>{{ end }}
       <h1>{{ .Title }}</h1>
-      {{ with .Description }}<p class="journal-deck">{{ . }}</p>{{ end }}
       <div class="journal-meta">
         <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
         <span aria-hidden="true">·</span>

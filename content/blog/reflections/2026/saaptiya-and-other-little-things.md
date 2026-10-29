@@ -2,7 +2,7 @@
 title: "Saaptiya? And Other Little Things"
 date: 2026-10-29
 draft: false
-description: "On the small Tamil phrases and everyday gestures I carried from Chennai into life elsewhere."
+description: "Explaining everyday Tamil phrases at a wedding made me notice how much of Chennai I still carry in Rotterdam."
 categories: ["reflection"]
 header_image: "/saaptiya_and_other_things.jpg"
 header_image_alt: "Illustration of someone sharing food, people waving, an auto-rickshaw, a bicycle, and coffee along a winding path."
