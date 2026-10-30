@@ -12,7 +12,7 @@ I've been back in Chennai for a couple of weeks now, and one of the things I've 
 
 It's a funny question when you think about it. Sometimes the person asking doesn't particularly need an answer. It's a greeting, a check-in, and an expression of care, all wrapped into one small question. Growing up, it was simply part of everyday life, along with the insistence that anyone visiting should have something to eat, even if they'd already said no.
 
-I never gave these things much thought growing up. At a wedding recently, I found myself explaining some of these everyday expressions and gestures to the bride, who is Australian. Trying to put them into words made me notice how many had followed me into life away from Chennai.
+I never gave these things much thought growing up. At a wedding recently, I found myself explaining some of these everyday expressions and gestures to the guests from the bride's side, who were Australian. Trying to put them into words made me notice how many had followed me into life away from Chennai.
 
 I love cooking for people. Not necessarily hosting elaborate dinner parties, but inviting a friend or two over and making something I think they'll enjoy. Sometimes that's a biryani, other times an elaborate dessert I've spent far too much time experimenting with. I enjoy the process, but more than anything, I enjoy sharing the result.
 
@@ -20,7 +20,7 @@ A little while ago, I baked four different kinds of cookies for the birthday of 
 
 Perhaps that's my own version of *saaptiya?* It's not always about the food. Sometimes making something for someone is simply a way of saying that you appreciate them.
 
-Another thing I've noticed being back in Chennai is how naturally the word *anna* slips into conversations. Literally meaning "older brother," it's used to address everyone from a shopkeeper to an auto driver. When I tell an auto driver where I'm going, *anna* comes out before the destination. We don't know each other's names, but the conversation already feels a little less anonymous.
+Another thing I've noticed being back in Chennai is how naturally the word *anna* slips into conversations. Literally meaning "elder brother," it's used to address everyone from a shopkeeper to an auto driver. When I tell an auto driver where I'm going, *anna* comes out before the destination. We don't know each other's names, but the conversation already feels a little less anonymous.
 
 In Rotterdam, I've come to appreciate a similar kind of familiarity in my everyday routines. There's my regular café, where a quick stop for coffee can turn into a conversation with the barista, familiar faces at the gym, and people I regularly meet through cycling. These aren't necessarily close friendships, nor do they need to be. But they make the city feel a little more like home.
 
