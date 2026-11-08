@@ -1,0 +1,8 @@
+<nav class="writing-topics" aria-label="Writing topics">
+  <a href="{{ "/blog/" | relURL }}"{{ if not .active }} aria-current="page"{{ end }}>All writing</a>
+  {{ range site.Taxonomies.categories.Alphabetical }}
+    {{ $label := .Term | humanize }}
+    {{ if eq .Term "reflection" }}{{ $label = "Reflections" }}{{ end }}
+    <a href="{{ printf "/categories/%s/" (.Term | urlize) | relURL }}"{{ if eq $.active .Term }} aria-current="page"{{ end }}>{{ $label }} <span>{{ .Count }}</span></a>
+  {{ end }}
+</nav>

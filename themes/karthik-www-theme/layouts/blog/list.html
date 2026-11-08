@@ -6,12 +6,13 @@
       <h1>{{ .Title }}</h1>
       {{ with .Description }}<p class="writing-intro-deck">{{ . }}</p>{{ end }}
     </header>
+    {{ partial "blog_topics.html" (dict "active" "") }}
 
     {{ if gt (len $posts) 0 }}
       {{ $featured := index $posts 0 }}
-      <section class="writing-feature" aria-labelledby="latest-essay">
+      <section class="writing-feature" aria-labelledby="latest-post">
         <div class="writing-section-heading">
-          <h2 id="latest-essay">Latest essay</h2>
+          <h2 id="latest-post">Latest post</h2>
           <span>{{ len $posts }} posts and counting</span>
         </div>
         <article class="featured-post{{ if not $featured.Params.header_image }} featured-post--text{{ end }}">
@@ -22,7 +23,7 @@
             </p>
             <h3><a href="{{ $featured.RelPermalink }}">{{ $featured.Title }}</a></h3>
             <p class="featured-post-excerpt">{{ $featured.Description | default ($featured.Summary | plainify | truncate 210) }}</p>
-            <a class="featured-post-link" href="{{ $featured.RelPermalink }}">Read the essay <span aria-hidden="true">↗</span></a>
+            <a class="featured-post-link" href="{{ $featured.RelPermalink }}">Read the post <span aria-hidden="true">↗</span></a>
           </div>
           {{ with $featured.Params.header_image }}
             <a class="featured-post-image" href="{{ $featured.RelPermalink }}" tabindex="-1" aria-hidden="true">

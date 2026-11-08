@@ -10,7 +10,7 @@ Use `npm run check` for the same warning-free production build used to validate 
 
 ## Publishing a post
 
-Create a draft with `hugo new blog/reflections/2026/my-post.md` (change the category folder, year, and filename as needed). Edit its title, date, description, category, and optional cover image. Set `draft: false` when it is ready to publish. Put cover images in `static/` and use a path such as `/my-post.jpg`. Add `header_image_alt` when the cover conveys information beyond the post title.
+Create a draft with `hugo new blog/musings/2026/my-post.md` (change the topic folder, year, and filename as needed). Use `musings` for observations and open-ended thoughts, `reflection` for personal lessons and retrospectives, `personal` for life updates, or `tutorials` for technical posts. The archetype starts with `musings`; change `categories` if you use another topic. Edit the title, date, description, and optional cover image. Set `draft: false` when it is ready to publish. Put cover images in `static/` and use a path such as `/my-post.jpg`. Add `header_image_alt` when the cover conveys information beyond the post title.
 
 ## Updating the reading list
 

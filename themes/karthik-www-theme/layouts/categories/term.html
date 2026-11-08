@@ -1,0 +1,32 @@
+{{ define "main" }}
+  {{ $term := .Data.Term }}
+  {{ $title := .Title }}
+  {{ if eq $term "reflection" }}{{ $title = "Reflections" }}{{ end }}
+  {{ $descriptions := dict
+    "musings" "Small observations and ideas I wanted to put into words."
+    "reflection" "Looking back, making sense of things, and noticing what has changed."
+    "personal" "Stories and updates from my life."
+    "tutorials" "Notes on building things for the web."
+  }}
+  {{ $posts := .Pages.ByDate.Reverse }}
+  <div class="writing-page">
+    <header class="writing-intro">
+      <p class="section-kicker eyebrow-with-icon"><img src="{{ "/icons/journal.svg" | relURL }}" alt="" aria-hidden="true" width="40" height="40" />The journal</p>
+      <h1>{{ $title }}</h1>
+      <p class="writing-intro-deck">{{ index $descriptions $term | default "Posts on this topic." }}</p>
+    </header>
+    {{ partial "blog_topics.html" (dict "active" $term) }}
+    <section class="writing-archive writing-archive--topic" aria-labelledby="topic-posts">
+      <div class="writing-section-heading">
+        <h2 id="topic-posts">{{ $title }}</h2>
+        <span>{{ len $posts }} {{ if eq (len $posts) 1 }}post{{ else }}posts{{ end }}</span>
+      </div>
+      {{ range $posts.GroupByDate "2006" }}
+        <div class="writing-year-group">
+          <h3>{{ .Key }}</h3>
+          <div class="post-list">{{ range .Pages }}{{ partial "list_item" . }}{{ end }}</div>
+        </div>
+      {{ end }}
+    </section>
+  </div>
+{{ end }}

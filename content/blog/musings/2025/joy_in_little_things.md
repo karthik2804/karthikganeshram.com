@@ -2,7 +2,7 @@
 title: "Coffee, Pastries, and the Joy in the Little Things"
 date: 2025-10-20
 draft: false
-categories: ["reflection"]
+categories: ["musings"]
 header_image: "/joy_in_little_things.png"
 ---
 

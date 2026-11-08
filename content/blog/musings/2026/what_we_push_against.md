@@ -2,7 +2,7 @@
 title: "What we push against"
 date: 2026-07-23
 draft: false
-categories: ["reflection"]
+categories: ["musings"]
 header_image: "/what_we_push_against.png"
 ---
 While I was listening to a podcast recently, I heard someone describe the idea that freedom enables creativity as a myth. It stayed with me. Perhaps because I had recently been hearing a similar idea about AI: that by removing the barriers to creation, it will give more people the freedom to express their creativity.
