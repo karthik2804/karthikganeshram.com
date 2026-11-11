@@ -41,7 +41,7 @@ This is the generous ramen bowl I made with soy milk in the broth, two kinds of 
 
 ## Method
 
-1. **Cook the eggs.** Air-fry at **140°C for about 11 minutes**, adjusting for your air fryer, then transfer to ice water for 5 minutes. Peel and halve.
+1. **Cook the eggs.** Air-fry at **120°C for about 10 minutes** for jammy yolks, adjusting for your air fryer, then transfer to ice water for 5 minutes. Peel and halve.
 2. **Crisp the tofu.** Pat it dry and toss with a little cornflour if you like. Pan-fry in a little neutral oil until golden, then finish with a splash of soy sauce. Set aside.
 3. **Brown the mushrooms.** Sauté the shiitake and champignons in the same pan until golden. Set aside.
 4. **Start the broth.** Melt the butter in a saucepan. Cook the garlic and ginger for about a minute, then add the vegetable stock and simmer for 5 minutes.
