@@ -1,0 +1,12 @@
+{{ $section := .section }}
+<div class="recipes-subgroup" data-recipe-subgroup>
+  <div class="recipes-subgroup-heading">
+    <h3>{{ .title }}</h3>
+    <span data-recipe-subgroup-count>{{ len .pages }} {{ if eq (len .pages) 1 }}recipe{{ else }}recipes{{ end }}</span>
+  </div>
+  <div class="recipes-grid">
+    {{ range $recipe := .pages }}
+      {{ partial "recipes/card.html" (dict "recipe" $recipe "section" $section) }}
+    {{ end }}
+  </div>
+</div>

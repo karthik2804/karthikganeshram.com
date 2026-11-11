@@ -2,7 +2,7 @@
   <article class="recipe-entry">
     <a class="recipe-back" href="{{ "/recipes/" | relURL }}">← All recipes</a>
     <header class="recipe-entry-header">
-      <p class="recipes-eyebrow">{{ .Params.recipe_type | default .Params.category }}</p>
+      <p class="recipes-eyebrow">{{ if eq .Params.category "Main meals" }}Main meals · {{ .Params.cuisine | default "Other" }}{{ else }}{{ .Params.recipe_type | default .Params.category }}{{ end }}</p>
       <h1>{{ .Title }}</h1>
       {{ with .Params.description }}<p class="recipe-entry-deck">{{ . }}</p>{{ end }}
       {{ if or .Params.prep_minutes .Params.cook_minutes .Params.servings }}

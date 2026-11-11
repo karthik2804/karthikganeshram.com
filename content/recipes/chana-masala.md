@@ -3,9 +3,9 @@ title: "Chana masala"
 date: 2026-10-17
 draft: false
 description: "Chickpeas simmered in a spiced onion and tomato sauce."
-category: "Cooking"
+category: "Main meals"
+cuisine: "Indian"
 eggless: true
-recipe_type: "Indian cooking"
 prep_minutes: 15
 cook_minutes: 35
 servings: "4 servings"

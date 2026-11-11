@@ -3,7 +3,8 @@ title: "Butter garlic gochujang noodles with tofu, broccoli, and mushrooms"
 date: 2026-10-17
 draft: false
 description: "Noodles with tofu, broccoli, mushrooms, and a sweet-savory gochujang sauce, made by feel."
-category: "Cooking"
+category: "Main meals"
+cuisine: "Japanese and Korean inspired"
 ingredient_groups:
   - name: Noodles and vegetables
     items:

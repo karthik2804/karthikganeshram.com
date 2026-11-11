@@ -3,9 +3,9 @@ title: "Coconut milk paneer curry"
 date: 2026-10-17
 draft: false
 description: "Paneer in a gently spiced onion, tomato, and coconut milk sauce."
-category: "Cooking"
+category: "Main meals"
+cuisine: "Indian"
 eggless: true
-recipe_type: "Indian cooking"
 prep_minutes: 15
 cook_minutes: 25
 servings: "3–4 servings"

@@ -1,17 +1,20 @@
 {{ define "main" }}
   {{ $recipes := (where site.RegularPages "Section" "recipes").ByTitle }}
-  {{ $sweets := slice }}
+  {{ $meals := where $recipes "Params.category" "Main meals" }}
+  {{ $airFryer := where $recipes "Params.category" "Air fryer" }}
+  {{ $cookies := where $recipes "Params.category" "Cookies" }}
+  {{ $desserts := where $recipes "Params.category" "Desserts" }}
   {{ $other := slice }}
   {{ range $recipes }}
-    {{ if in (slice "Cookies" "Desserts") .Params.category }}
-      {{ $sweets = $sweets | append . }}
-    {{ else if ne .Params.category "Cooking" }}
+    {{ if not (in (slice "Main meals" "Air fryer" "Cookies" "Desserts") .Params.category) }}
       {{ $other = $other | append . }}
     {{ end }}
   {{ end }}
   {{ $sections := slice
-    (dict "title" "Cooking" "id" "cooking" "kicker" "On the stove & beyond" "intro" "The meals and small things I make on repeat." "icon" "/icons/recipe-bowl.svg" "pages" (where $recipes "Params.category" "Cooking"))
-    (dict "title" "Sweet things" "id" "sweets" "kicker" "Bakes & desserts" "intro" "Cookies and the other sweet things I make." "icon" "/icons/recipe-cookie.svg" "pages" $sweets)
+    (dict "title" "Main meals" "id" "meals" "kicker" "At the table" "intro" "The curries, pastas, and noodle bowls I keep coming back to." "icon" "/icons/recipe-bowl.svg" "pages" $meals)
+    (dict "title" "Air fryer" "id" "air-fryer" "kicker" "Quick things" "intro" "Small meals and snacks made in the air fryer." "icon" "/icons/recipe-air-fryer.svg" "pages" $airFryer)
+    (dict "title" "Cookies" "id" "cookies" "kicker" "From the oven" "intro" "The filled, chocolatey, and occasionally experimental ones." "icon" "/icons/recipe-cookie.svg" "pages" $cookies)
+    (dict "title" "Desserts" "id" "desserts" "kicker" "Something sweet" "intro" "The sweet things beyond cookies." "icon" "/icons/recipe-dessert.svg" "pages" $desserts)
     (dict "title" "More recipes" "id" "more" "kicker" "Also in my kitchen" "intro" "Other things I’ve been making." "icon" "/icons/recipe-bowl.svg" "pages" $other)
   }}
   <div class="recipes-page">
@@ -20,7 +23,14 @@
         <p class="recipes-eyebrow">From my kitchen</p>
         <h1>{{ .Title }}<span aria-hidden="true">.</span></h1>
         <div class="recipes-intro">{{ .Content }}</div>
-        {{ with $recipes }}<p class="recipes-count">{{ len . }} recipes, and counting</p>{{ end }}
+        {{ if gt (len $recipes) 0 }}
+          {{ $latest := index ($recipes.ByDate.Reverse) 0 }}
+          <a class="recipes-latest" href="{{ $latest.RelPermalink }}">
+            <span class="recipes-latest-label">Just added</span>
+            <strong>{{ $latest.Title }}</strong>
+            <span class="recipes-latest-arrow" aria-hidden="true">↗</span>
+          </a>
+        {{ end }}
       </div>
       <div class="recipes-hero-art" aria-hidden="true">
         <img src="{{ "/icons/recipe-bowl.svg" | relURL }}" alt="" width="40" height="40" />
@@ -28,24 +38,39 @@
     </header>
 
     {{ with $recipes }}
-      <div class="recipes-filters" data-recipes-filters hidden>
-        <div class="recipes-filter-field recipes-filter-search">
-          <label for="recipe-search">Search recipes</label>
-          <input id="recipe-search" type="search" placeholder="Try paneer, chocolate, garlic…" autocomplete="off" data-recipe-search />
+      <div class="recipes-browse" data-recipes-filters hidden>
+        <div class="recipes-browse-heading">
+          <div>
+            <p class="recipes-eyebrow">Find something to make</p>
+            <h2 id="recipe-browse-title">Browse recipes</h2>
+            <p>Choose a section, or search by recipe or ingredient.</p>
+          </div>
         </div>
-        <div class="recipes-filter-field">
-          <label for="recipe-category">Category</label>
-          <select id="recipe-category" data-recipe-category>
-            <option value="">All categories</option>
-            {{ range $recipes.GroupByParam "category" }}
-              <option value="{{ .Key | urlize }}">{{ .Key }}</option>
+        <div class="recipes-categories" role="group" aria-labelledby="recipe-browse-title">
+          <button class="recipes-category recipes-category--all" type="button" data-recipe-group="" aria-pressed="true">
+            <span class="recipes-category-copy"><strong>All sections</strong><small>Everything in my kitchen</small></span>
+            <span class="recipes-category-count">{{ len . }} recipes</span>
+          </button>
+          {{ range $section := $sections }}
+            {{ with $section.pages }}
+              <button class="recipes-category" type="button" data-recipe-group="{{ $section.id }}" aria-pressed="false">
+                <img src="{{ $section.icon | relURL }}" alt="" width="40" height="40" />
+                <span class="recipes-category-copy"><strong>{{ $section.title }}</strong><small>{{ $section.intro }}</small></span>
+                <span class="recipes-category-count">{{ len . }} {{ if eq (len .) 1 }}recipe{{ else }}recipes{{ end }}</span>
+              </button>
             {{ end }}
-          </select>
+          {{ end }}
         </div>
-        <label class="recipes-filter-check"><input type="checkbox" data-recipe-eggless /> Eggless available</label>
-        <div class="recipes-filter-result">
-          <p aria-live="polite" aria-atomic="true" data-recipe-count>{{ len . }} recipes shown</p>
-          <button type="button" data-recipe-clear hidden>Clear filters</button>
+        <div class="recipes-filters">
+          <div class="recipes-filter-field recipes-filter-search">
+            <label for="recipe-search">Search by recipe or ingredient</label>
+            <input id="recipe-search" type="search" placeholder="Try paneer, chocolate, garlic…" autocomplete="off" data-recipe-search />
+          </div>
+          <label class="recipes-filter-check"><input type="checkbox" data-recipe-eggless /> <span>Can be made without eggs</span></label>
+          <div class="recipes-filter-result">
+            <p aria-live="polite" aria-atomic="true" data-recipe-count>{{ len . }} recipes shown</p>
+            <button type="button" data-recipe-clear hidden>Show all recipes</button>
+          </div>
         </div>
       </div>
     {{ end }}
@@ -59,32 +84,28 @@
               <h2 id="heading-{{ $section.id }}">{{ $section.title }}</h2>
               <p>{{ $section.intro }}</p>
             </div>
-            <span data-recipe-section-count>{{ len . }} {{ if eq (len .) 1 }}recipe{{ else }}recipes{{ end }}</span>
+            <div class="recipes-section-actions">
+              <span data-recipe-section-count>{{ len . }} {{ if eq (len .) 1 }}recipe{{ else }}recipes{{ end }}</span>
+              <a href="#recipe-browse-title" data-recipe-change hidden>Change section ↑</a>
+            </div>
           </div>
-          <div class="recipes-grid {{ if eq $section.id "sweets" }}recipes-grid--sweets{{ end }}">
-            {{ range $recipe := . }}
-              {{ $searchTerms := slice $recipe.Title ($recipe.Params.description | default "") ($recipe.Params.recipe_type | default "") }}
-              {{ range $recipe.Params.ingredients }}{{ $searchTerms = $searchTerms | append . }}{{ end }}
-              {{ range $recipe.Params.ingredient_groups }}{{ range .items }}{{ $searchTerms = $searchTerms | append . }}{{ end }}{{ end }}
-              <article class="recipe-card" data-recipe-card data-category="{{ $recipe.Params.category | urlize }}" data-eggless="{{ if $recipe.Params.eggless }}true{{ else }}false{{ end }}" data-search="{{ delimit $searchTerms " " | lower }}">
-                {{ with $recipe.Params.image }}<div class="recipe-card-visual"><img src="{{ . | relURL }}" alt="" loading="lazy" decoding="async" /></div>{{ end }}
-                <div class="recipe-card-copy">
-                  {{ with $recipe.Params.recipe_type }}<p class="recipe-card-tag">{{ . }}</p>{{ else }}{{ if eq $section.id "more" }}<p class="recipe-card-tag">{{ $recipe.Params.category | default "Recipe" }}</p>{{ end }}{{ end }}
-                  <h3><a href="{{ $recipe.RelPermalink }}">{{ $recipe.Title }}</a></h3>
-                  {{ with $recipe.Params.description }}<p class="recipe-card-description">{{ . }}</p>{{ end }}
-                  <div class="recipe-card-footer">
-                    {{ if or $recipe.Params.prep_minutes $recipe.Params.cook_minutes }}
-                      <span class="recipe-card-time">{{ with $recipe.Params.prep_minutes }}Prep {{ . }} min{{ end }}{{ with $recipe.Params.cook_minutes }}{{ if $recipe.Params.prep_minutes }} · {{ end }}Cook {{ . }} min{{ end }}</span>
-                    {{ end }}
-                    <span class="recipe-card-action">Read recipe <span aria-hidden="true">↗</span></span>
-                  </div>
-                </div>
-              </article>
+          {{ if eq $section.id "meals" }}
+            {{ range $group := $meals.GroupByParam "cuisine" }}
+              {{ if $group.Key }}{{ partial "recipes/subgroup.html" (dict "title" $group.Key "pages" $group.Pages "section" $section) }}{{ end }}
             {{ end }}
-          </div>
+            {{ $uncategorizedMeals := slice }}
+            {{ range $meals }}{{ if not .Params.cuisine }}{{ $uncategorizedMeals = $uncategorizedMeals | append . }}{{ end }}{{ end }}
+            {{ with $uncategorizedMeals }}{{ partial "recipes/subgroup.html" (dict "title" "Other meals" "pages" . "section" $section) }}{{ end }}
+          {{ else }}
+            <div class="recipes-grid">
+              {{ range $recipe := . }}
+                {{ partial "recipes/card.html" (dict "recipe" $recipe "section" $section) }}
+              {{ end }}
+            </div>
+          {{ end }}
         </section>
       {{ end }}
     {{ end }}
-    <p class="recipes-filter-empty" data-recipe-empty hidden>No recipes match those filters. Try another search or clear the filters.</p>
+    <p class="recipes-filter-empty" data-recipe-empty hidden>No recipes match those filters. <a href="#recipe-browse-title">Change your search or filters ↑</a></p>
   </div>
 {{ end }}

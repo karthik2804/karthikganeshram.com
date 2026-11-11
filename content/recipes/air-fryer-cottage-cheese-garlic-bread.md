@@ -3,9 +3,8 @@ title: "Cottage cheese garlic bread"
 date: 2026-10-17
 draft: false
 description: "A cottage cheese and gram flour bread with garlic and cheese inside."
-category: "Cooking"
+category: "Air fryer"
 eggless: true
-recipe_type: "Air fryer"
 prep_minutes: 10
 cook_minutes: "10–12"
 servings: "1 filled bread"

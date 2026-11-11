@@ -1,7 +1,7 @@
 ---
 title: "Recipes"
 date: 2026-10-16
-description: "Curries, quick meals, air fryer snacks, cookies, and desserts from my kitchen."
+description: "The meals, bakes, and other things I keep making for myself."
 ---
 
-The things I keep making: curries and quick meals, air fryer snacks, a lot of cookies, and the occasional dessert. Some I measure; others, especially the noodles, I make by feel.
+This is a list of things I keep making for myself. The main meals are grouped loosely by cuisine, alongside quick air fryer snacks, a lot of cookies, and the occasional dessert. The amounts and timings are starting points; I often adjust things as I cook.

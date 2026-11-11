@@ -3,9 +3,8 @@ title: "Paneer tikka"
 date: 2026-10-17
 draft: false
 description: "Spiced paneer, onion, and peppers cooked in the air fryer."
-category: "Cooking"
+category: "Air fryer"
 eggless: true
-recipe_type: "Air fryer"
 prep_minutes: 20
 cook_minutes: "7–9"
 servings: "3 servings"

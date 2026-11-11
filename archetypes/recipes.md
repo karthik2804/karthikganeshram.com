@@ -3,9 +3,11 @@ title: "{{ replace .Name "-" " " | title }}"
 date: {{ .Date }}
 draft: true
 description: ""
-# Use Cooking, Cookies, or Desserts. Cookies and Desserts appear under Sweet things.
-category: "Cooking"
-# Optional label within the section, e.g. Indian cooking, Air fryer, or Noodles.
+# Choose Main meals, Air fryer, Cookies, or Desserts.
+category: "Main meals"
+# For Main meals, name the cuisine or influence, e.g. Indian or Italian.
+cuisine: ""
+# Optional extra label for the card, only if it adds detail beyond the section.
 recipe_type: ""
 # Set true if this recipe has an eggless option (or is always eggless).
 eggless: false

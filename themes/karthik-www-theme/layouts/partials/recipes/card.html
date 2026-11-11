@@ -1,0 +1,25 @@
+{{ $recipe := .recipe }}
+{{ $section := .section }}
+{{ $searchTerms := slice $recipe.Title ($recipe.Params.description | default "") ($recipe.Params.cuisine | default "") ($recipe.Params.recipe_type | default "") }}
+{{ range $recipe.Params.ingredients }}{{ $searchTerms = $searchTerms | append . }}{{ end }}
+{{ range $recipe.Params.ingredient_groups }}{{ range .items }}{{ $searchTerms = $searchTerms | append . }}{{ end }}{{ end }}
+{{ $tag := $recipe.Params.recipe_type | default "" }}
+{{ if and (eq $section.id "more") (not $tag) }}{{ $tag = $recipe.Params.category | default "Recipe" }}{{ end }}
+<article class="recipe-card" data-recipe-card data-group="{{ $section.id }}" data-eggless="{{ if $recipe.Params.eggless }}true{{ else }}false{{ end }}" data-search="{{ delimit $searchTerms " " | lower }}">
+  {{ with $recipe.Params.image }}<div class="recipe-card-visual"><img src="{{ . | relURL }}" alt="" loading="lazy" decoding="async" /></div>{{ end }}
+  <div class="recipe-card-copy">
+    {{ if and $tag (ne ($tag | lower) ($section.title | lower)) }}<p class="recipe-card-tag">{{ $tag }}</p>{{ end }}
+    {{ if eq $section.id "meals" }}
+      <h4><a href="{{ $recipe.RelPermalink }}">{{ $recipe.Title }}</a></h4>
+    {{ else }}
+      <h3><a href="{{ $recipe.RelPermalink }}">{{ $recipe.Title }}</a></h3>
+    {{ end }}
+    {{ with $recipe.Params.description }}<p class="recipe-card-description">{{ . }}</p>{{ end }}
+    <div class="recipe-card-footer">
+      {{ if or $recipe.Params.prep_minutes $recipe.Params.cook_minutes }}
+        <span class="recipe-card-time">{{ with $recipe.Params.prep_minutes }}Prep {{ . }} min{{ end }}{{ with $recipe.Params.cook_minutes }}{{ if $recipe.Params.prep_minutes }} · {{ end }}Cook {{ . }} min{{ end }}</span>
+      {{ end }}
+      <span class="recipe-card-action">Read recipe <span aria-hidden="true">↗</span></span>
+    </div>
+  </div>
+</article>

@@ -26,8 +26,8 @@ For cycling trips, add `strava_activities` with a title and public activity URL 
 
 Keep the recipe collection meat- and fish-free; egg recipes are included.
 
-Run `hugo new recipes/my-recipe.md`. Set `category` to `Cooking`, `Cookies`, or `Desserts`. Cookies and desserts appear together under **Sweet things**; any other category appears under **More recipes**. You can add a short `recipe_type` label such as `Indian cooking` or `Air fryer`. Fill in `ingredients` and write the method below the frontmatter. Prep time, cook time, servings, and an image from `static/` are optional. Set `draft: false` when the recipe is ready to appear on `/recipes/`.
+Run `hugo new recipes/my-recipe.md`. Set `category` to `Main meals`, `Air fryer`, `Cookies`, or `Desserts`. For a main meal, set `cuisine` to a short group name such as `Indian`, `Italian`, or `Japanese and Korean inspired`. Recipes with the same cuisine appear together automatically; if it is blank, the recipe appears under **Other meals**. Add `recipe_type` only if an extra label adds useful detail. Fill in `ingredients` and write the method below the frontmatter. Prep time, cook time, servings, and an image from `static/` are optional. Set `draft: false` when the recipe is ready to appear on `/recipes/`.
 
 For recipes with separate parts, use `ingredient_groups` instead of `ingredients`; each group has a `name` and an `items` list. Leave `draft: true` while you are still writing the recipe.
 
-The recipe page can be searched by title, description, recipe label, and ingredients, then narrowed by category or eggless availability. Set `eggless: true` for a recipe that can be made without eggs, including one with an eggless variation, so it appears in the eggless filter.
+These are personal cooking notes, so amounts and timings can stay approximate. The recipe page can be searched by title, description, cuisine, recipe label, and ingredients, then narrowed by section or eggless availability. Set `eggless: true` for a recipe that can be made without eggs, including one with an eggless variation, so it appears in the eggless filter.
