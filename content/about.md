@@ -8,6 +8,15 @@ portrait: "/karthik.png"
 instagram_url: "https://www.instagram.com/karthik_ganeshram/"
 instagram_handle: "@karthik_ganeshram"
 instagram_embed: true
+music_on_repeat:
+  - name: "Manchester Orchestra"
+    spotify_url: "https://open.spotify.com/artist/5wFXmYsg3KFJ8BDsQudJ4f"
+  - name: "Amble"
+    spotify_url: "https://open.spotify.com/artist/5ZC7GPz5h9zkEfjZBUDNzI"
+  - name: "Poets of the Fall"
+    spotify_url: "https://open.spotify.com/artist/1AZ30JnvQU1pbX6sbRE0Yn"
+  - name: "The Lumineers"
+    spotify_url: "https://open.spotify.com/artist/16oZKvXb6WkQlVAjwo2Wbg"
 ---
 
 I grew up in Chennai, studied computer engineering at UC Davis, and now live in Rotterdam. I’m a senior software engineer at Akamai, working on server-side WebAssembly and cloud computing.

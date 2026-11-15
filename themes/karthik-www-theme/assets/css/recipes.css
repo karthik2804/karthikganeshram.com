@@ -42,7 +42,7 @@
   margin-top: 1.8rem;
   padding: 1rem 1.2rem;
   border: 1px solid var(--line);
-  background: var(--paper-deep);
+  background: var(--sun);
   color: var(--ink);
   text-decoration: none;
 }
@@ -58,7 +58,7 @@
   place-items: center;
   border: 1px solid var(--line);
   border-radius: 50%;
-  background: var(--paper-deep);
+  background: var(--mint);
 }
 .recipes-hero-art img { width: 6rem; height: 6rem; }
 
@@ -85,14 +85,18 @@
   border-top: 1px solid var(--line);
   border-right: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  background: #fffefa;
+  background: var(--category-bg, #fffefa);
   color: var(--ink);
   font: inherit;
   text-align: left;
   cursor: pointer;
 }
-.recipes-category:hover { background: var(--paper-deep); }
-.recipes-category[aria-pressed="true"] { background: var(--paper-deep); box-shadow: inset 0 3px var(--accent); }
+.recipes-category:not(.recipes-category--all):nth-child(4n+2) { --category-bg: #fff0df; --category-active: #ffe2c5; }
+.recipes-category:not(.recipes-category--all):nth-child(4n+3) { --category-bg: #e9f5e9; --category-active: #d8edda; }
+.recipes-category:not(.recipes-category--all):nth-child(4n+4) { --category-bg: #f2eafa; --category-active: #e7d9f4; }
+.recipes-category:not(.recipes-category--all):nth-child(4n+5) { --category-bg: #eaf2fc; --category-active: #dceafa; }
+.recipes-category:hover { background: var(--category-active, var(--paper-deep)); }
+.recipes-category[aria-pressed="true"] { background: var(--category-active, var(--paper-deep)); box-shadow: inset 0 3px var(--accent); }
 .recipes-category:focus-visible { position: relative; z-index: 1; outline: 3px solid var(--accent); outline-offset: -3px; }
 .recipes-category img { grid-column: 1; grid-row: 1; width: 1.8rem; height: 1.8rem; }
 .recipes-category-copy { display: grid; grid-column: 1 / -1; grid-row: 2; align-content: start; gap: .3rem; }
@@ -207,6 +211,10 @@
   background: #fffefa;
   transition: border-color .2s ease, transform .2s ease;
 }
+.recipe-card:nth-child(4n+1) { background: var(--peach-light); }
+.recipe-card:nth-child(4n+2) { background: var(--mint-light); }
+.recipe-card:nth-child(4n+3) { background: var(--lavender-light); }
+.recipe-card:nth-child(4n+4) { background: var(--sky-light); }
 .recipe-card:hover { border-color: #bba89a; transform: translateY(-2px); }
 .recipe-card:has(:is(h3, h4) a:focus-visible) { outline: 3px solid var(--accent); outline-offset: 3px; }
 .recipe-card-visual { aspect-ratio: 16 / 9; overflow: hidden; }

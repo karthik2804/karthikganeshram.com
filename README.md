@@ -8,6 +8,14 @@ Install dependencies with `npm install`, then run `npm start` for local developm
 
 Use `npm run check` for the same warning-free production build used to validate changes.
 
+## Updating About milestones
+
+Edit the `milestones` list in the frontmatter of `content/about-milestones.md`. This Markdown file supplies the About page without creating a separate public page. Keep this list to a few turning points; trips belong in the travel notes. Each entry needs a quoted `date`, a title, and a short description. Dates can be a year (`"2024"`), month (`"2025-03"`), or day (`"2022-03-21"`). The page formats and sorts them automatically. Use only the precision you know.
+
+The `activity_milestones` list in the same file powers the Cycling, Running, and Swimming progress rows. Add an entry under a group's `entries` with a full `YYYY-MM-DD` date, a short `metric` (such as `10 km`), a `label`, and a short description. Add an optional `url` for a related travel note. The rows sort entries by date. These are manually maintained snapshots of recorded activities, not a live feed. Label new entries as recorded firsts only after checking the available history.
+
+To change the "On repeat" section on About, edit `music_on_repeat` in `content/about.md`. Each artist has a `name` and a direct `spotify_url`.
+
 ## Publishing a post
 
 Create a draft with `hugo new blog/musings/2026/my-post.md` (change the topic folder, year, and filename as needed). Use `musings` for observations and open-ended thoughts, `reflection` for personal lessons and retrospectives, `personal` for life updates, or `tutorials` for technical posts. The archetype starts with `musings`; change `categories` if you use another topic. Edit the title, date, description, and optional cover image. Set `draft: false` when it is ready to publish. Put cover images in `static/` and use a path such as `/my-post.jpg`. Add `header_image_alt` when the cover conveys information beyond the post title.
