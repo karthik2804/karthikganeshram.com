@@ -54,6 +54,10 @@ activity_milestones:
         metric: "29:46"
         label: "5K under 30 minutes"
         description: "In Chennai."
+      - date: "2026-11-21"
+        metric: "21.25 km"
+        label: "First half marathon"
+        description: "2:30:00, at 7:04 per kilometre."
   - name: "Swimming"
     entries:
       - date: "2026-08-29"
