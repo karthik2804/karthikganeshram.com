@@ -335,12 +335,16 @@ main a:hover {
 }
 
 @media (max-width: 540px) {
+  .about-music { padding: 1rem; }
+  .about-music-heading { gap: .2rem; margin-bottom: 1rem; }
+  .about-music-heading > p:last-child { max-width: none; }
+  .about-music ul { grid-template-columns: 1fr; gap: .5rem; }
+  .about-music li a { display: grid; grid-template-columns: 2rem minmax(0, 1fr); grid-template-rows: auto auto; align-items: center; column-gap: .8rem; row-gap: .1rem; min-height: 4.5rem; padding: .75rem .85rem; }
+  .about-music-note { grid-row: 1 / span 2; }
+  .about-music strong { grid-column: 2; }
+  .about-music-link { grid-column: 2; margin-top: 0; }
   .about-chapters,
   .about-progress-steps { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 390px) {
-  .about-music ul { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {
